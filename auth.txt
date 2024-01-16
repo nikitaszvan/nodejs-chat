@@ -1,0 +1,31 @@
+app.get("/auth", function (req, res) {
+  const token = req.headers["x-auth-token"];
+  if (token) {
+    const decoded = jwt.verify(token, "shhhhh");
+
+    return res
+      .status(200)
+      .json({ user: { email: decoded.email, name: decoded.name } });
+  }
+
+  res.json({ message: "Failed Auth" });
+});
+
+app.post("/login", async function (req, res) {
+  const { email, password } = req.body;
+  const user = await User.findOne({ email: email });
+  if (user) {
+    const checkPassword = await bcrypt.compare(password, user.password);
+    if (checkPassword) {
+      const token = jwt.sign(
+        { email: email, password: password, name: user.name },
+        "shhhhh"
+      );
+      return res
+        .status(200)
+        .json({ token, user: { email: user.email, name: user.name } });
+    }
+    return res.status(403).json({ message: "Failed" });
+  }
+  res.json({ message: "Failed" });
+});
