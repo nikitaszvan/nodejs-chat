@@ -78,8 +78,9 @@ socket.on('nsList',(nsData)=>{
     console.log(nsData);
     const nameSpacesDiv = document.querySelector('.namespaces');
     nameSpacesDiv.innerHTML = "";
-    nsData.forEach(ns=>{
+    nsData.forEach(ns =>{
         //update the HTML with each ns
+        if (ns.id !== 0) { 
         nameSpacesDiv.innerHTML +=  `<div class="namespace" ns="${ns.endpoint}"><img src="${ns.image}"></div>`
 
         //initialize thisNs as its index in nameSpaceSockets.
@@ -87,14 +88,25 @@ socket.on('nsList',(nsData)=>{
         //If the connection has already been established, it will reconnect and remain in its spot
         // let thisNs = nameSpaceSockets[ns.id];
         
-        if(!nameSpaceSockets[ns.id]){
-            //There is no socket at this nsId. So make a new connection!
-            //join this namespace with io()
-            nameSpaceSockets[ns.id] = io(`http://localhost:9000${ns.endpoint}`);
-        }
-        addListeners(ns.id);
+        
+    }
+    else {
+        const dmRooms = document.querySelector('.dm-room-list');
+        dmRooms.innerHTML = "";
+        ns.rooms.forEach(room => {
+            dmRooms.innerHTML += `<li class="glyphicon glyphicon-globe room" namespaceId="0">${room.roomTitle}</li>`
+        })
 
+    }
+    if(!nameSpaceSockets[ns.id]){
+        //There is no socket at this nsId. So make a new connection!
+        //join this namespace with io()
+        nameSpaceSockets[ns.id] = io(`http://localhost:9000${ns.endpoint}`);
+    }
+    addListeners(ns.id);
     })
+    
+
 
     Array.from(document.getElementsByClassName('namespace')).forEach(element=>{
         element.addEventListener('click',e=>{

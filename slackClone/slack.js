@@ -48,6 +48,10 @@ app.set('io', io);
 app.get("/login", function (req, res) {
     res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
+
+app.get("/slack", function (req, res) {
+    res.sendFile(path.join(__dirname, 'public', 'slack.html'));
+});
 app.post("/login", function (req, res) {
     const { email, password } = req.body;
     
@@ -59,11 +63,11 @@ app.post("/login", function (req, res) {
     //   );
   
       // Redirect to a secure page upon successful login
-      return res.redirect('/slack.html');
+      return res.redirect('/slack');
     }
   
     // Redirect back to the login page if username or password is incorrect
-    return res.redirect('/login.html');
+    return res.redirect('/login');
   });
 
 // app.get("/auth", function (req, res) {

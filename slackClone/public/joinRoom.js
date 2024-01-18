@@ -1,7 +1,12 @@
-const joinRoom = async(roomTitle,namespaceId)=>{
+const joinRoom = async(roomTitle, namespaceId)=>{
 
     const ackResp = await nameSpaceSockets[namespaceId].emitWithAck('joinRoom',{roomTitle,namespaceId});
-    document.querySelector('.curr-room-num-users').innerHTML = `${ackResp.numUsers}<span class="fa-solid fa-user"></span>`
+    if (namespaceId == 0) {
+        document.querySelector('.curr-room-num-users').innerHTML = '';
+    }
+    else{
+        document.querySelector('.curr-room-num-users').innerHTML = `${ackResp.numUsers}<span class="fa-solid fa-user"></span>`;
+    }
     document.querySelector('.curr-room-text').innerHTML = roomTitle;
 
     //we get back the room history in the acknowledge as well!

@@ -19,25 +19,25 @@ body{
     width:45px;
 }
 
-.room-list{
+.room-list, .dm-room-list{
     padding-left: 0px;
     transition: all 2s;
 }
 
-.room-list li{
+.room-list li, .dm-room-list li{
     cursor: pointer;
     list-style-type: none;
 }
 
-.room-list.closed li{
+.room-list.closed li, .dm-room-list.closed li{
     display: none;
 }
 
-.room-list li span{
+.room-list li span, .dm-room-list li span{
     margin-right: 5px;
 }
 
-.room-list li.active{
+.room-list li.active, .dm-room-list li.active{
     background-color: #61AFEF;
     color: #fff
 }
