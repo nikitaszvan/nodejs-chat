@@ -3,8 +3,6 @@
 
 const joinNs = (element,nsData)=>{
     const nsEndpoint = element.getAttribute('ns');
-    console.log(nsEndpoint);
-
     const clickedNs = nsData.find(row=>row.endpoint === nsEndpoint);
     //global so we can submit the new message to the right place
     selectedNsId = clickedNs.id;
@@ -23,7 +21,6 @@ const joinNs = (element,nsData)=>{
         if(i === 0){
             firstRoom = room.roomTitle;
         }
-        console.log(room);
         roomList.innerHTML += `<li class="room" namespaceId=${room.namespaceId}>
             <span class="fa-solid fa-${room.privateRoom ? 'lock' : 'globe'}"></span>${room.roomTitle}
         </li>`

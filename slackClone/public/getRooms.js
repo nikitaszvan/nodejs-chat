@@ -2,12 +2,11 @@
 // THIS FILE IS SOLEY FOR STUDENTS WHO SKIPPED OVER THE "Add Rooms to DOM" lecture
 //================================================================================
 
-// const userName = prompt("What is your username?");
-// const password = prompt("What is your password?");
+
 
 //Temp remove the promt's to save dev headaches!
-const userName = userName;
-const password = password;
+const userName = 'Rob';
+const password = 'x';
 
 const socket = io('http://localhost:9000');
 
@@ -20,13 +19,13 @@ socket.on('connect',()=>{
 socket.on('nsList',(nsData)=>{
     console.log(nsData);
     const nameSpacesDiv = document.querySelector('.namespaces');
-    nsData.forEach(ns=>{
-        //update the HTML with each ns
-        nameSpacesDiv.innerHTML +=  `<div class="namespace" ns="${ns.endpoint}"><img src="${ns.image}"></div>`
-    })
+    // nsData.forEach(ns=>{
+    //     console.log(ns);
+    //     //update the HTML with each ns
+    //     nameSpacesDiv.innerHTML +=  `<div class="namespace" ns="${ns.endpoint}"><img src="${ns.image}"></div>`
+    // })
 
-    Array.from(document.getElementsByClassName('namespace')).forEach(element=>{
-        console.log(element)
+    Array.from(document.getElementsByClassName('namespace')).forEach(element, index=>{
         element.addEventListener('click',e=>{
             const nsEndpoint = element.getAttribute('ns');
             console.log(nsEndpoint);

@@ -2,16 +2,84 @@ const express = require('express');
 const app = express();
 const socketio = require('socket.io');
 const Room = require('./classes/Room');
+const path = require('path');
+// const bcrypt = require('bcrypt');
+// const jwt = require('jsonwebtoken');
+// const User = require('./models/User');
 
 const namespaces = require('./data/namespaces');
 
 app.use(express.static(__dirname + '/public'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const expressServer = app.listen(9000);
 const io = socketio(expressServer)
 
 app.set('io', io);
 
+ // Import your User model
+
+// app.post("/login", async function (req, res) {
+//   const { email, password } = req.body;
+//   const user = await User.findOne({ email: email });
+
+//   if (user) {
+//     const checkPassword = await bcrypt.compare(password, user.password);
+
+//     if (checkPassword) {
+//       const token = jwt.sign(
+//         { email: email, password: password, name: user.name },
+//         "shhhhh"
+//       );
+
+//       // Redirect to a secure page upon successful login
+//       return res.redirect('/slack.html');
+//     }
+
+//     // Redirect back to the login page if password check fails
+//     return res.redirect('/login.html');
+//   }
+
+//   // Redirect back to the login page if user not found
+//   res.redirect('/login.html');
+// });
+
+app.get("/login", function (req, res) {
+    res.sendFile(path.join(__dirname, 'public', 'login.html'));
+});
+app.post("/login", function (req, res) {
+    const { email, password } = req.body;
+    
+    // Hardcoded check for username and password
+    if (email === "Rob" && password === "x") {
+    //   const token = jwt.sign(
+    //     { email: email, password: password, name: "Rob" },
+    //     "shhhhh"
+    //   );
+  
+      // Redirect to a secure page upon successful login
+      return res.redirect('/slack.html');
+    }
+  
+    // Redirect back to the login page if username or password is incorrect
+    return res.redirect('/login.html');
+  });
+
+// app.get("/auth", function (req, res) {
+//   const token = req.headers["x-auth-token"];
+
+//   if (token) {
+//     const decoded = jwt.verify(token, "shhhhh");
+
+//     return res
+//       .status(200)
+//       .json({ user: { email: decoded.email, name: decoded.name } });
+//   }
+
+//   // Redirect to login page if no token is present
+//   res.redirect('/login.html');
+// });
 
 //manufactured way to change an ns (without building a huge UI)
 app.get('/change-ns',(req, res)=>{
@@ -103,3 +171,5 @@ namespaces.forEach(namespace=>{
 
     })
 })
+
+

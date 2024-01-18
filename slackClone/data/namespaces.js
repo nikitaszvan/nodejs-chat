@@ -1,24 +1,30 @@
 const Namespace = require('../classes/Namespace');
 const Room = require('../classes/Room');
 
-const wikiNs = new Namespace(0,'Wikipedia','https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/103px-Wikipedia-logo-v2.svg.png','/wiki');
-const mozNs = new Namespace(1,'Mozilla','https://www.mozilla.org/media/img/logos/firefox/logo-quantum.9c5e96634f92.png','/mozilla')
-const linuxNs = new Namespace(2,'Linux','https://upload.wikimedia.org/wikipedia/commons/a/af/Tux.png','/linux')
+const directMessagesNs = new Namespace(0,'DM','','/direct-message-ns');
+const Ns1 = new Namespace(1,'Namespace1','','/namespace-1')
+const Ns2 = new Namespace(2,'Namespace2','','/namespace-2')
+const Ns3 = new Namespace(3,'Namespace2','','/namespace-2')
 
-wikiNs.addRoom(new Room(0,'New Articles',0,true));
-wikiNs.addRoom(new Room(1,'Editors',0));
-wikiNs.addRoom(new Room(2,'Other',0));
+directMessagesNs.addRoom(new Room(0,'Emily Smith',0));
+directMessagesNs.addRoom(new Room(1,'Joshua Johnson',0));
+directMessagesNs.addRoom(new Room(2,'Sophia Davis',0));
+directMessagesNs.addRoom(new Room(3,'Michael Brown',0));
 
-mozNs.addRoom(new Room(0,'Firefox',1));
-mozNs.addRoom(new Room(1,'SeaMonkey',1));
-mozNs.addRoom(new Room(2,'SpiderMonkey',1));
-mozNs.addRoom(new Room(3,'Rust',1));
+Ns1.addRoom(new Room(0,'#room-1',1,true));
+Ns1.addRoom(new Room(1,'#room-2',1));
+Ns1.addRoom(new Room(2,'#room-3',1));
 
-linuxNs.addRoom(new Room(0,'Debian',2))
-linuxNs.addRoom(new Room(1,'Red Hat',2))
-linuxNs.addRoom(new Room(2,'Ubuntu',2))
-linuxNs.addRoom(new Room(3,'Mac OS',2))
+Ns2.addRoom(new Room(0,'#room-4',2));
+Ns2.addRoom(new Room(1,'#room-5',2));
+Ns2.addRoom(new Room(2,'#room-6',2));
+Ns2.addRoom(new Room(3,'#room-7',2));
 
-const namespaces = [wikiNs,mozNs,linuxNs];
+Ns3.addRoom(new Room(0,'#room-8',3))
+Ns3.addRoom(new Room(1,'#room-9',3))
+Ns3.addRoom(new Room(2,'#room-10',3))
+Ns3.addRoom(new Room(3,'#room-11',3))
+
+const namespaces = [directMessagesNs, Ns1,Ns2,Ns3];
 
 module.exports = namespaces;

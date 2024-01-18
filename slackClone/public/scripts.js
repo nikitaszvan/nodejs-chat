@@ -1,12 +1,14 @@
 
 //Temp remove the promt's to save dev headaches!
+const userName = 'Rob';
+const password = 'x';
 
 const clientOptions = {
     query:{
-        userName,password
+        userName, password
     },
     auth:{
-        userName,password
+        userName, password
     }
 }
 
