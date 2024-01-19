@@ -4,7 +4,7 @@ const joinRoom = async(roomTitle, namespaceId)=>{
     if (namespaceId == 0) {
         document.querySelector('.curr-room-num-users').innerHTML = '';
     }
-    else{
+    else {
         document.querySelector('.curr-room-num-users').innerHTML = `${ackResp.numUsers}<span class="fa-solid fa-user"></span>`;
     }
     document.querySelector('.curr-room-text').innerHTML = roomTitle;

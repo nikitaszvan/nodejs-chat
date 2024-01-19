@@ -4,7 +4,7 @@ const socketio = require('socket.io');
 const Room = require('./classes/Room');
 const path = require('path');
 // const bcrypt = require('bcrypt');
-// const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 // const User = require('./models/User');
 
 const namespaces = require('./data/namespaces');
@@ -12,6 +12,12 @@ const namespaces = require('./data/namespaces');
 app.use(express.static(__dirname + '/public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
+  });
 
 const expressServer = app.listen(9000);
 const io = socketio(expressServer)
@@ -49,26 +55,29 @@ app.get("/login", function (req, res) {
     res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
-app.get("/slack", function (req, res) {
-    res.sendFile(path.join(__dirname, 'public', 'slack.html'));
+app.get("/index", function (req, res) {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
-app.post("/login", function (req, res) {
-    const { email, password } = req.body;
-    
-    // Hardcoded check for username and password
-    if (email === "Rob" && password === "x") {
-    //   const token = jwt.sign(
-    //     { email: email, password: password, name: "Rob" },
-    //     "shhhhh"
-    //   );
+app.post('/login', async (req, res) => {
+    const { username, password } = req.body;
   
-      // Redirect to a secure page upon successful login
-      return res.redirect('/slack');
-    }
+    // Check the inputted credentials against the hardcoded user
+    if (username === "Rob") {
+        // If the credentials are correct, generate a JWT token
+        const token = jwt.sign({ username: username, password: password }, 'secret_key');
+        console.log(token);
+        // Redirect to another endpoint (e.g., '/dashboard') upon successful login
+        return res.json({ token, redirect: '/index' });
+      }
+
+    // else {
+    //     return res.json({ redirect: '/login' });
+    // }
   
-    // Redirect back to the login page if username or password is incorrect
-    return res.redirect('/login');
+    // If the credentials are incorrect, return an error response
+    res.status(401).json({ error: 'Invalid credentials' });
   });
+  
 
 // app.get("/auth", function (req, res) {
 //   const token = req.headers["x-auth-token"];
@@ -90,13 +99,12 @@ app.get('/change-ns',(req, res)=>{
     //update namespaces array
     namespaces[0].addRoom(new Room(0,'Deleted Articles',0))
     //let everyone know in THIS namespace, that it changed
-    io.of(namespaces[0].endpoint).emit('nsChange',namespaces[0]);
+    io.of(namespaces[0].endpoint).emit('nsChange', namespaces[0]);
     res.json(namespaces[0]);
 })
 
 io.use((socket,next)=>{
     const jwt = socket.handshake.query.jwt;
-    console.log(jwt);
     if(1){
         next()
     }else{
@@ -106,15 +114,8 @@ io.use((socket,next)=>{
 })
 
 io.on('connection',(socket)=>{
-
-    // console.log('==================')
-    // console.log(socket.handshake);
-
-    const userName = socket.handshake.query.userName;
-    const jwt = socket.handshake.query.jwt;
-
     socket.emit('welcome', "Welcome to the server.");
-    socket.on('clientConnect', (data) => {
+    socket.on('clientConnect', () => {
         console.log(socket.id, "has connected")
         socket.emit('nsList', namespaces)
     })

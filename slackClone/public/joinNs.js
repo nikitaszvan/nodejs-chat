@@ -18,7 +18,7 @@ const joinNs = (element,nsData)=>{
 
     //loop through each room, and add it to the DOM
     rooms.forEach((room,i)=>{
-        if(i === 0){
+        if(i === 0) {
             firstRoom = room.roomTitle;
         }
         roomList.innerHTML += `<li class="room group" namespaceId=${room.namespaceId}>

@@ -60,7 +60,6 @@ const addListeners = (nsId)=>{
     if(!listeners.messageToRoom[nsId]){
         //add the nsId listener to this namespace!
         nameSpaceSockets[nsId].on('messageToRoom',messageObj=>{
-            console.log(messageObj);
             document.querySelector('#messages').innerHTML += buildMessageHtml(messageObj);
         })
         listeners.messageToRoom[nsId] = true;
