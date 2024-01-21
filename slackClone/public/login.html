@@ -7,13 +7,57 @@
 </head>
 <body>
     <h2>Login</h2>
-    <form onsubmit="loginUser(document.getElementById('username').value, document.getElementById('password').value)" id="">
+    <form id="loginForm">
         <label for="email">Email:</label>
         <input type="text" id="username" name="email" required><br>
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required><br>
         <input type="submit" value="Login">
     </form>
+<script>
+document.getElementById('loginForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    // Now you can use these values to send a request to your server
+    // (e.g., using fetch or another HTTP request library)
+    fetch('/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Fetch /index after successful login
+                return fetch('/index', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${data.accessToken}`
+                    },
+                });
+            } else {
+                console.error(data.error);
+            }
+        })
+        .then(indexResponse => {
+            // Check if the /index request was successful
+            if (indexResponse.ok) {
+                window.location.href = '/index';
+            } else {
+                // Handle the case where /index request failed
+                console.error('Error during /index request:', indexResponse.status);
+            }
+        })
+        .catch(error => {
+            console.error('Error during login:', error);
+        });
+});
+</script>
 </body>
-<script src="/loginUser.js"></script>
 </html>
