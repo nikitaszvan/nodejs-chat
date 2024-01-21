@@ -76,8 +76,7 @@ app.get("/login", function (req, res) {
 
 app.get("/index", authenticateToken, (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
-    const filteredInfo = logins.filter(login => login.username === req.user.name);
-    res.json(filteredInfo);
+    //const filteredInfo = logins.filter(login => login.username === req.user.name);
 });
 
 let refreshTokens = [];
@@ -128,7 +127,7 @@ function authenticateToken(req, res, next) {
     if (token == null) return res.sendStatus(401);
 
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-        console.log(token, process.env.ACCESS_TOKEN_SECRET);
+        console.error('Token Verification Error:', err);
         if (err) return res.sendStatus(403);
         req.user = user;
         next();
