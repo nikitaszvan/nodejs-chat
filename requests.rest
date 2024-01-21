@@ -1,0 +1,28 @@
+POST http://localhost:9000/login
+Content-Type: application/json
+
+{
+    "username": "Rob",
+    "password": "x"
+}
+
+###
+
+GET http://localhost:9000/index
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUm9iIiwiaWF0IjoxNzA1ODEyOTE1fQ.45Kp0fHP3-YB9dMJ9KO43ihlqkiIQW8KXxis1C21p_Q
+###
+POST http://localhost:9000/token
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUm9iIiwiaWF0IjoxNzA1ODEyOTAyLCJleHAiOjE3MDU4MTM1MDJ9.tSNqevCasMacKKYIiVDG41GQYwaEQDCnKKcmMmUai1c"
+}
+
+###
+
+DELETE http://localhost:4000/logout
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUm9iIiwiaWF0IjoxNzA1ODEzNDgwLCJleHAiOjE3MDU4MTQwODB9.KG371qJDPtk0IU_L9p_UKWQTeHm5fbyBhkFMZPJ3maE"
+}

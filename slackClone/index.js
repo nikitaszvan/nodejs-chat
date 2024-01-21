@@ -5,6 +5,7 @@ const Room = require('./classes/Room');
 const path = require('path');
 // const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 // const User = require('./models/User');
 
 const namespaces = require('./data/namespaces');
@@ -16,6 +17,7 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
     next();
   });
 
@@ -50,34 +52,88 @@ app.set('io', io);
 //   // Redirect back to the login page if user not found
 //   res.redirect('/login.html');
 // });
+const logins = [
+    {
+        username: 'Rob',
+        password: 'x',
+        message: 'You are signed in as Rob',
+    },
+    {
+        username: 'Bor',
+        password: 'x',
+        message: 'You are signed in as Bor',
+    },
+    {
+        username: 'X',
+        password: 'x',
+        message: 'You are signed in as x',
+    },
+]
 
 app.get("/login", function (req, res) {
     res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
-app.get("/index", function (req, res) {
+app.get("/index", authenticateToken, (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    const filteredInfo = logins.filter(login => login.username === req.user.name);
+    res.json(filteredInfo);
 });
-app.post('/login', async (req, res) => {
-    const { username, password } = req.body;
-  
-    // Check the inputted credentials against the hardcoded user
-    if (username === "Rob") {
-        // If the credentials are correct, generate a JWT token
-        const token = jwt.sign({ username: username, password: password }, 'secret_key');
-        console.log(token);
-        // Redirect to another endpoint (e.g., '/dashboard') upon successful login
-        return res.json({ token, redirect: '/index' });
-      }
 
-    // else {
-    //     return res.json({ redirect: '/login' });
-    // }
-  
-    // If the credentials are incorrect, return an error response
-    res.status(401).json({ error: 'Invalid credentials' });
-  });
-  
+let refreshTokens = [];
+
+app.post('/token', (req, res) => {
+    const refreshToken = req.body.token;
+    if (refreshToken == null) return res.sendStatus(401);
+    if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403);
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+        if (err) return res.sendStatus(403)
+        const accessToken = generateAccessToken({ name: user.name });
+        res.json({ accessToken: accessToken });
+    })
+});
+
+app.delete('/logout', (req, res) => {
+    refreshTokens = refreshTokens.filter(token => token !== req.body.token);
+    res.sendStatus(204);
+});
+
+app.post('/login', (req, res) => {
+    const {username, password} = req.body;
+    const user = { name: username };
+    const filteredLogins = logins.filter(login => login.username === username);
+    if (filteredLogins.length === 0) {
+        return res.status(401).json({ error: 'Incorrect credentials' });
+    }
+    console.log(filteredLogins);
+
+    const findPassword = filteredLogins.find(login => login.password === password);
+    if (findPassword) {
+        const accessToken = generateAccessToken(user);
+        const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '10m' });
+        refreshTokens.push(refreshToken);
+        res.json({ accessToken: accessToken, refreshToken: refreshToken });
+    }
+    else {
+        return res.status(401).json({ error: 'Incorrect credentials' });
+    }
+});
+
+function generateAccessToken(user) {
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+}
+
+function authenticateToken(req, res, next) {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    if (token == null) return res.sendStatus(401);
+
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+        if (err) return res.sendStatus(403);
+        req.user = user;
+        next();
+    })
+}
 
 // app.get("/auth", function (req, res) {
 //   const token = req.headers["x-auth-token"];
