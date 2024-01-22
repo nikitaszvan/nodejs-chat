@@ -26,60 +26,31 @@ const io = socketio(expressServer)
 
 app.set('io', io);
 
- // Import your User model
-
-// app.post("/login", async function (req, res) {
-//   const { email, password } = req.body;
-//   const user = await User.findOne({ email: email });
-
-//   if (user) {
-//     const checkPassword = await bcrypt.compare(password, user.password);
-
-//     if (checkPassword) {
-//       const token = jwt.sign(
-//         { email: email, password: password, name: user.name },
-//         "shhhhh"
-//       );
-
-//       // Redirect to a secure page upon successful login
-//       return res.redirect('/slack.html');
-//     }
-
-//     // Redirect back to the login page if password check fails
-//     return res.redirect('/login.html');
-//   }
-
-//   // Redirect back to the login page if user not found
-//   res.redirect('/login.html');
-// });
 const logins = [
     {
-        username: 'Rob',
-        password: 'x',
-        message: 'You are signed in as Rob',
+        email: 'emilysmith@outmail.com',
+        password: 'password',
     },
     {
-        username: 'Bor',
-        password: 'x',
-        message: 'You are signed in as Bor',
+        email: 'davidblake@outmail.com',
+        password: 'password',
     },
-    {
-        username: 'X',
-        password: 'x',
-        message: 'You are signed in as x',
-    },
-]
+];
 
 app.get("/login", function (req, res) {
     res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
-app.get("/index", authenticateToken, (req, res) => {
+app.get("/index", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
-    //const filteredInfo = logins.filter(login => login.username === req.user.name);
+    //const filteredInfo = logins.filter(login => login.email === req.user.name);
 });
 
 let refreshTokens = [];
+
+app.get("/auth", authenticateToken, (req, res) => {
+    res.redirect('/index');
+})
 
 app.post('/token', (req, res) => {
     const refreshToken = req.body.token;
@@ -98,9 +69,9 @@ app.delete('/logout', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-    const {username, password} = req.body;
-    const user = { name: username };
-    const filteredLogins = logins.filter(login => login.username === username);
+    const {email, password} = req.body;
+    const user = { name: email };
+    const filteredLogins = logins.filter(login => login.email === email);
     if (filteredLogins.length === 0) {
         return res.status(401).json({ error: 'Incorrect credentials' });
     }
@@ -127,7 +98,6 @@ function authenticateToken(req, res, next) {
     if (token == null) return res.sendStatus(401);
 
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-        console.error('Token Verification Error:', err);
         if (err) return res.sendStatus(403);
         req.user = user;
         next();

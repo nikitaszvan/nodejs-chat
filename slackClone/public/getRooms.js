@@ -1,12 +1,4 @@
-//================================================================================
-// THIS FILE IS SOLEY FOR STUDENTS WHO SKIPPED OVER THE "Add Rooms to DOM" lecture
-//================================================================================
 
-
-
-//Temp remove the promt's to save dev headaches!
-const userName = 'Rob';
-const password = 'x';
 
 const socket = io('http://localhost:9000');
 

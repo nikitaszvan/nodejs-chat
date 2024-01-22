@@ -9,7 +9,7 @@
     <h2>Login</h2>
     <form id="loginForm">
         <label for="email">Email:</label>
-        <input type="text" id="username" name="email" required><br>
+        <input type="text" id="email" name="email" required><br>
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required><br>
         <input type="submit" value="Login">
@@ -18,23 +18,21 @@
 document.getElementById('loginForm').addEventListener('submit', function (event) {
     event.preventDefault();
 
-    const username = document.getElementById('username').value;
+    const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    // Now you can use these values to send a request to your server
-    // (e.g., using fetch or another HTTP request library)
     fetch('/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ email, password }),
     })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
                 // Fetch /index after successful login
-                return fetch('/index', {
+                return fetch('/auth', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -47,12 +45,9 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
         })
         .then(indexResponse => {
             // Check if the /index request was successful
-            if (indexResponse.ok) {
+            if (indexResponse) {
                 window.location.href = '/index';
-            } else {
-                // Handle the case where /index request failed
-                console.error('Error during /index request:', indexResponse.status);
-            }
+            } 
         })
         .catch(error => {
             console.error('Error during login:', error);
