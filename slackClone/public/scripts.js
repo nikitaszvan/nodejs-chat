@@ -1,22 +1,17 @@
-
-//Temp remove the promt's to save dev headaches!
-const userName = 'Rob';
-const password = 'x';
+const userEmail = '';
+const userPassword = '';
 
 const clientOptions = {
     query:{
-        userName, password
+        userEmail, userPassword
     },
     auth:{
-        userName, password
+        userEmail, userPassword
     }
 }
 
 //always join the main namespace, because that's where the client gets the other namespaces from
 const socket = io('http://localhost:9000', clientOptions);
-// const socket2 = io('http://localhost:9000/wiki');
-// const socket3 = io('http://localhost:9000/mozilla');
-// const socket4 = io('http://localhost:9000/linux');
 
 //sockets will be put into this array, in the index of their ns.id
 const nameSpaceSockets = [];
@@ -91,6 +86,7 @@ socket.on('nsList',(nsData)=>{
     }
     else {
         const dmRooms = document.querySelector('.dm-room-list');
+        console.log(userEmail, userPassword);
         dmRooms.innerHTML = "";
         ns.rooms.forEach(room => {
             dmRooms.innerHTML += `<li class="glyphicon glyphicon-globe room" namespaceId="0">${room.roomTitle}</li>`

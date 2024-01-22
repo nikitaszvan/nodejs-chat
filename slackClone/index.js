@@ -24,6 +24,7 @@ app.use((req, res, next) => {
 const expressServer = app.listen(9000);
 const io = socketio(expressServer)
 
+
 app.set('io', io);
 
 const logins = [
@@ -32,9 +33,22 @@ const logins = [
         password: 'password',
     },
     {
-        email: 'davidblake@outmail.com',
+        email: 'joshuajohnson@outmail.com',
         password: 'password',
     },
+    {
+        email: 'sophiadavis@outmail.com',
+        password: 'password',
+    },
+    {
+        email: 'michaelbrown@outmail.com',
+        password: 'password',
+    },
+    {
+        email: 'georgeblake@outmail.com',
+        password: 'password',
+    },
+
 ];
 
 app.get("/login", function (req, res) {
@@ -70,6 +84,8 @@ app.delete('/logout', (req, res) => {
 
 app.post('/login', (req, res) => {
     const {email, password} = req.body;
+    userEmail = email;
+    userPassword = password;
     const user = { name: email };
     const filteredLogins = logins.filter(login => login.email === email);
     if (filteredLogins.length === 0) {
@@ -201,5 +217,4 @@ namespaces.forEach(namespace=>{
 
     })
 })
-
 

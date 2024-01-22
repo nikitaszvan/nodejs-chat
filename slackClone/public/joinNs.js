@@ -39,5 +39,5 @@ const joinNs = (element,nsData)=>{
         })
     })
 
-    localStorage.setItem('lastNs',nsEndpoint);
+    localStorage.setItem('lastNs', nsEndpoint);
 }
