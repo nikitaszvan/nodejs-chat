@@ -1,18 +1,46 @@
-const userEmail = '';
-const userPassword = '';
-
-const clientOptions = {
-    query:{
-        userEmail, userPassword
+const logins = [
+    {
+        name: 'Emily Smith',
+        email: 'emilysmith@outmail.com',
+        password: 'password',
     },
-    auth:{
-        userEmail, userPassword
-    }
-}
+    {
+        name: 'Joshua Johnson',
+        email: 'joshuajohnson@outmail.com',
+        password: 'password',
+    },
+    {
+        name: 'Sophia Davis',
+        email: 'sophiadavis@outmail.com',
+        password: 'password',
+    },
+    {
+        name: 'Michael Brown',
+        email: 'michaelbrown@outmail.com',
+        password: 'password',
+    },
+    {
+        name: 'George Blake',
+        email: 'georgeblake@outmail.com',
+        password: 'password',
+    },
+
+];
+
+
+const userEmail = localStorage.getItem("useremail");
+const userName = logins.find(user => user.email == userEmail);
+const loginname = userName.name;
+document.getElementById('user-name').innerHTML +=  `<h2>${loginname}</h2>`
+
+
+
+
 
 //always join the main namespace, because that's where the client gets the other namespaces from
-const socket = io('http://localhost:9000', clientOptions);
+// const socket = io('http://localhost:9000', clientOptions);
 
+const socket = io('http://localhost:9000');
 //sockets will be put into this array, in the index of their ns.id
 const nameSpaceSockets = [];
 const listeners = {
@@ -25,7 +53,7 @@ const listeners = {
 let selectedNsId = 0;
 
 //add a submit handler for our form
-document.querySelector('#message-form').addEventListener('submit',e=>{
+document.querySelector('#message-form').addEventListener('submit', (e)=>{
     //keep the browser from submitting
     e.preventDefault();
     //grab the value from the input box
@@ -34,7 +62,7 @@ document.querySelector('#message-form').addEventListener('submit',e=>{
         newMessage,
         date: Date.now(),
         avatar: 'https://via.placeholder.com/30',
-        userName,
+        user: loginname,
         selectedNsId,
     })
     document.querySelector('#user-message').value = "";
@@ -54,7 +82,7 @@ const addListeners = (nsId)=>{
     }
     if(!listeners.messageToRoom[nsId]){
         //add the nsId listener to this namespace!
-        nameSpaceSockets[nsId].on('messageToRoom',messageObj=>{
+        nameSpaceSockets[nsId].on('messageToRoom', (messageObj) =>{
             document.querySelector('#messages').innerHTML += buildMessageHtml(messageObj);
         })
         listeners.messageToRoom[nsId] = true;
@@ -69,7 +97,6 @@ socket.on('connect',()=>{
 //lisen for the nsList event from the server which gives us the namespaces
 socket.on('nsList',(nsData)=>{
     const lastNs = localStorage.getItem('lastNs');
-    console.log(nsData);
     const nameSpacesDiv = document.querySelector('.namespaces');
     nameSpacesDiv.innerHTML = "";
     nsData.forEach(ns =>{
@@ -86,10 +113,11 @@ socket.on('nsList',(nsData)=>{
     }
     else {
         const dmRooms = document.querySelector('.dm-room-list');
-        console.log(userEmail, userPassword);
         dmRooms.innerHTML = "";
         ns.rooms.forEach(room => {
-            dmRooms.innerHTML += `<li class="glyphicon glyphicon-globe room" namespaceId="0">${room.roomTitle}</li>`
+            if (room.roomTitle != userName.name) {
+                dmRooms.innerHTML += `<li class="glyphicon glyphicon-globe room" namespaceId="0">${room.roomTitle}</li>`
+            }
         })
 
     }

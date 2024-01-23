@@ -9,6 +9,8 @@ require('dotenv').config();
 // const User = require('./models/User');
 
 const namespaces = require('./data/namespaces');
+let userName;
+let userPassword;
 
 app.use(express.static(__dirname + '/public'));
 app.use(express.json());
@@ -29,22 +31,27 @@ app.set('io', io);
 
 const logins = [
     {
+        name: 'Emily Smith',
         email: 'emilysmith@outmail.com',
         password: 'password',
     },
     {
+        name: 'Joshua Johnson',
         email: 'joshuajohnson@outmail.com',
         password: 'password',
     },
     {
+        name: 'Sophia Davis',
         email: 'sophiadavis@outmail.com',
         password: 'password',
     },
     {
+        name: 'Michael Brown',
         email: 'michaelbrown@outmail.com',
         password: 'password',
     },
     {
+        name: 'George Blake',
         email: 'georgeblake@outmail.com',
         password: 'password',
     },
@@ -57,13 +64,16 @@ app.get("/login", function (req, res) {
 
 app.get("/index", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    const { name, email } = req.query;
     //const filteredInfo = logins.filter(login => login.email === req.user.name);
 });
 
 let refreshTokens = [];
 
 app.get("/auth", authenticateToken, (req, res) => {
-    res.redirect('/index');
+
+    // Redirect to '/index' with additional query parameters
+    res.redirect(`/index?name=${userName}&email=${userPassword}`);
 })
 
 app.post('/token', (req, res) => {
@@ -84,7 +94,7 @@ app.delete('/logout', (req, res) => {
 
 app.post('/login', (req, res) => {
     const {email, password} = req.body;
-    userEmail = email;
+    userName = email;
     userPassword = password;
     const user = { name: email };
     const filteredLogins = logins.filter(login => login.email === email);
@@ -211,7 +221,6 @@ namespaces.forEach(namespace=>{
             //add this message to this room's history
             const thisNs = namespaces[messageObj.selectedNsId];
             const thisRoom = thisNs.rooms.find(room=>room.roomTitle === currentRoom);
-            console.log(thisRoom)
             thisRoom.addMessage(messageObj);
         })
 
