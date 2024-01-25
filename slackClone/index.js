@@ -3,6 +3,7 @@ const app = express();
 const socketio = require('socket.io');
 const Room = require('./classes/Room');
 const path = require('path');
+const axios = require('axios');
 // const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
@@ -62,19 +63,48 @@ app.get("/login", function (req, res) {
     res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
-app.get("/index", (req, res) => {
+app.get("/logout", function (req, res) {
+    res.redirect("/login");
+})
+
+app.get("/", function (req, res) {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
-    const { name, email } = req.query;
-    //const filteredInfo = logins.filter(login => login.email === req.user.name);
+});
+
+app.post("/", async (req, res) => {
+
+    try {
+        // Make a request to another route or external API to get JSON data
+        const response = await axios.get('http://localhost:9000/auth', {
+            headers: {
+                'Content-Type': `${req.headers['content-type']}`,
+                'Authorization': `${req.headers['authorization']}`
+            }
+        });
+
+        // Extract the JSON data from the response
+        const jsonData = response.data;
+        // console.log(jsonData)
+
+        res.send(jsonData);
+    } catch (error) {
+        console.error(error);
+        // res.status(500).send('Internal Server Error');
+    }
+
+    // res.sendFile(path.join(__dirname, 'public', 'index.html'));
+
+});
+
+app.get("/auth", authenticateToken, (req, res) => {
+    res.send({
+        isRedirect: true
+    });
+    // res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 let refreshTokens = [];
 
-app.get("/auth", authenticateToken, (req, res) => {
-
-    // Redirect to '/index' with additional query parameters
-    res.redirect(`/index?name=${userName}&email=${userPassword}`);
-})
 
 app.post('/token', (req, res) => {
     const refreshToken = req.body.token;
@@ -84,12 +114,12 @@ app.post('/token', (req, res) => {
         if (err) return res.sendStatus(403)
         const accessToken = generateAccessToken({ name: user.name });
         res.json({ accessToken: accessToken });
-    })
+    });
 });
 
 app.delete('/logout', (req, res) => {
     refreshTokens = refreshTokens.filter(token => token !== req.body.token);
-    res.sendStatus(204);
+    res.redirect('/login');
 });
 
 app.post('/login', (req, res) => {
@@ -107,7 +137,7 @@ app.post('/login', (req, res) => {
         const accessToken = generateAccessToken(user);
         const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '10m' });
         refreshTokens.push(refreshToken);
-        return res.json({ success: true, redirectTo: '/index', accessToken: accessToken, refreshToken: refreshToken });
+        return res.json({ success: true, accessToken: accessToken, refreshToken: refreshToken });
     }
     else {
         return res.status(401).json({ error: 'Incorrect credentials' });
@@ -128,6 +158,7 @@ function authenticateToken(req, res, next) {
         req.user = user;
         next();
     })
+
 }
 
 // app.get("/auth", function (req, res) {

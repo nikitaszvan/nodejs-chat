@@ -2,14 +2,21 @@ POST http://localhost:9000/login
 Content-Type: application/json
 
 {
-    "username": "Rob",
-    "password": "x"
+    "email": "emilysmith@outmail.com",
+    "password": "password"
 }
 
 ###
 
-GET http://localhost:9000/index
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUm9iIiwiaWF0IjoxNzA1ODEyOTE1fQ.45Kp0fHP3-YB9dMJ9KO43ihlqkiIQW8KXxis1C21p_Q
+GET http://localhost:9000/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiZW1pbHlzbWl0aEBvdXRtYWlsLmNvbSIsImlhdCI6MTcwNjA3Njg2N30.bcOPXf_jjwXoIGYkUjosP8rH3Rq1m4fbVB06HPy-YL0
+
+###
+
+GET http://localhost:9000/auth
+ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiZW1pbHlzbWl0aEBvdXRtYWlsLmNvbSIsImlhdCI6MTcwNjA3Njg2N30.bcOPXf_jjwXoIGYkUjosP8rH3Rq1m4fbVB06HPy-YL0
+
 ###
 POST http://localhost:9000/token
 Content-Type: application/json

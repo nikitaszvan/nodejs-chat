@@ -1,3 +1,4 @@
+
 const logins = [
     {
         name: 'Emily Smith',
@@ -28,10 +29,21 @@ const logins = [
 ];
 
 
-const userEmail = localStorage.getItem("useremail");
-const userName = logins.find(user => user.email == userEmail);
-const loginname = userName.name;
-document.getElementById('user-name').innerHTML +=  `<h2>${loginname}</h2>`
+const urlParams = new URLSearchParams(window.location.search);
+const userId = urlParams.get('i');
+console.log(userId);
+let userDetails = localStorage.getItem(`user_email_${userId}`) || localStorage.getItem(`test_${userId}`);
+console.log(userDetails);
+localStorage.removeItem(`user_email_${userId}`);
+localStorage.setItem(`test_${userId}`, userDetails);
+const loginname = logins.find(user => user.email == userDetails);
+console.log(loginname, loginname.name);
+document.getElementById('user-name').innerHTML +=  `<h2 id='username-header'>${loginname.name}</h2>`
+
+
+
+ 
+
 
 
 
@@ -62,11 +74,18 @@ document.querySelector('#message-form').addEventListener('submit', (e)=>{
         newMessage,
         date: Date.now(),
         avatar: 'https://via.placeholder.com/30',
-        user: loginname,
+        user: loginname.name,
         selectedNsId,
     })
     document.querySelector('#user-message').value = "";
-})
+});
+
+document.querySelector('#logout-form').addEventListener('submit', (e)=> {
+    e.preventDefault();
+    localStorage.removeItem(`test_${userId}`);
+    userDetails='';
+    e.target.submit();
+});
 
 //addListeners job is to manage all listeners added to all namespaces.
 //this prevents listeneres being added multiples times and makes life
@@ -90,7 +109,7 @@ const addListeners = (nsId)=>{
 }
 
 socket.on('connect',()=>{
-    console.log("Connected!");
+    console.log("Socket connected!");
     socket.emit('clientConnect');
 })
 
@@ -115,7 +134,7 @@ socket.on('nsList',(nsData)=>{
         const dmRooms = document.querySelector('.dm-room-list');
         dmRooms.innerHTML = "";
         ns.rooms.forEach(room => {
-            if (room.roomTitle != userName.name) {
+            if (room.roomTitle != loginname.name) {
                 dmRooms.innerHTML += `<li class="glyphicon glyphicon-globe room" namespaceId="0">${room.roomTitle}</li>`
             }
         })
@@ -141,4 +160,4 @@ socket.on('nsList',(nsData)=>{
     //if lastNs is set, grab that element instead of 0.
     joinNs(document.getElementsByClassName('namespace')[0],nsData)
 
-})
+});

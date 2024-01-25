@@ -20,7 +20,10 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
 
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    localStorage.setItem("useremail", email);
+    
+    const sessionId = Math.random().toString(36).substring(2, 15);
+    localStorage.setItem(`user_email_${sessionId}`, email);
+    const user = {email, password};
 
     fetch('/login', {
         method: 'POST',
@@ -32,11 +35,9 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Fetch /index after successful login
-                return fetch('/auth', {
-                    method: 'GET',
+                return fetch('/', {
+                    method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
                         'Authorization': `Bearer ${data.accessToken}`
                     },
                 });
@@ -44,14 +45,15 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
                 console.error(data.error);
             }
         })
-        .then(indexResponse => {
-            // Check if the /index request was successful
-            if (indexResponse) {
-                window.location.href = '/index';
+        .then(indexResponse => indexResponse.json())
+        .then(jsonData => {
+            if (jsonData.isRedirect === true) {
+                window.location.href = `/?i=${sessionId}`;
             } 
         })
         .catch(error => {
-            console.error('Error during login:', error);
+            throw error;
+            // console.error('Error during login:', error);
         });
 });
 </script>
