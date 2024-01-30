@@ -3,26 +3,31 @@ const logins = [
     {
         name: 'Emily Smith',
         email: 'emilysmith@outmail.com',
+        avatar: './img/worker1_profile_pic.jpg',
         password: 'password',
     },
     {
         name: 'Joshua Johnson',
         email: 'joshuajohnson@outmail.com',
+        avatar: './img/worker2_profile_pic.jpg',
         password: 'password',
     },
     {
         name: 'Sophia Davis',
         email: 'sophiadavis@outmail.com',
+        avatar: './img/worker3_profile_pic.jpg',
         password: 'password',
     },
     {
         name: 'Michael Brown',
         email: 'michaelbrown@outmail.com',
+        avatar: './img/worker4_profile_pic.jpg',
         password: 'password',
     },
     {
         name: 'George Blake',
         email: 'georgeblake@outmail.com',
+        avatar: './img/worker5_profile_pic.jpg',
         password: 'password',
     },
 
@@ -37,15 +42,7 @@ console.log(userDetails);
 localStorage.removeItem(`user_email_${userId}`);
 localStorage.setItem(`test_${userId}`, userDetails);
 const loginname = logins.find(user => user.email == userDetails);
-console.log(loginname, loginname.name);
 document.getElementById('user-name').innerHTML +=  `<h2 id='username-header'>${loginname.name}</h2>`
-
-
-
- 
-
-
-
 
 
 
@@ -63,6 +60,7 @@ const listeners = {
 //a global variable we can update when the user clicks on a namespace
 //we will use it to broadcast across the app (redux would be great here...)
 let selectedNsId = 0;
+const date = new Date()
 
 //add a submit handler for our form
 document.querySelector('#message-form').addEventListener('submit', (e)=>{
@@ -71,9 +69,9 @@ document.querySelector('#message-form').addEventListener('submit', (e)=>{
     //grab the value from the input box
     const newMessage = document.querySelector('#user-message').value;
     nameSpaceSockets[selectedNsId].emit('newMessageToRoom',{
-        newMessage,
-        date: Date.now(),
-        avatar: 'https://via.placeholder.com/30',
+        message: newMessage,
+        date: `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()} ${String(date.getHours() % 12 || 12).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')} ${date.getHours() < 12 ? 'a.m.' : 'p.m.'}`,
+        avatar: loginname.avatar,
         user: loginname.name,
         selectedNsId,
     })

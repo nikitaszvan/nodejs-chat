@@ -1,10 +1,9 @@
 class Room{
-    constructor(roomId,roomTitle,namespaceId,privateRoom = false){
+    constructor(roomId,roomTitle,namespaceId,history=[]){
         this.roomId = roomId;
         this.roomTitle = roomTitle;
         this.namespaceId = namespaceId;
-        this.privateRoom = privateRoom;
-        this.history = [];
+        this.history = history;
     }
 
     addMessage(message){

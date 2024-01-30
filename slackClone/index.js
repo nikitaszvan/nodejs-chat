@@ -8,7 +8,6 @@ const axios = require('axios');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 // const User = require('./models/User');
-
 const namespaces = require('./data/namespaces');
 let userName;
 let userPassword;

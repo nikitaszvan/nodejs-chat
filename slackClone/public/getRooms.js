@@ -1,5 +1,4 @@
 
-const credentials = require('./credentials');
 const socket = io('http://localhost:9000');
 
 socket.on('connect',()=>{

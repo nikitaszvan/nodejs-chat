@@ -115,8 +115,12 @@ input {
     display: inline-block;
 }
 #messages li .user-message{
-    margin-left: 10px;
     color: #fff;
+}
+
+.user-avatar {
+    width: 30px;
+    height: 30px;
 }
 
 #messages li .user-message .message-text{
