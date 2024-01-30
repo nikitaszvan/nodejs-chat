@@ -211,6 +211,7 @@ namespaces.forEach(namespace=>{
             const thisNs = namespaces[roomObj.namespaceId];
             const thisRoomObj = thisNs.rooms.find(room=>room.roomTitle === roomObj.roomTitle)
             const thisRoomsHistory = thisRoomObj.history;
+            console.log(thisRoomObj);
 
             //leave all rooms, because the client can only be in one room
             const rooms = socket.rooms;
