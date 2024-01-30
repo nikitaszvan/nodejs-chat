@@ -64,6 +64,7 @@ const retrieveTableInfo = async (table) => {
   }
 };
 
+
   module.exports = retrieveTableInfo;
 
   

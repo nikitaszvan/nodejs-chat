@@ -10,6 +10,7 @@ async function main(tableName) {
     try {
       data = await retrieveTableInfo(tableName);
       // Do something with the exported data
+      console.log(data);
       return data;
     } catch (error) {
       console.error('Error exporting data:', error);
@@ -41,17 +42,19 @@ const Ns3 = new Namespace(3, 'Namespace3', './img/squirtle.png', '/namespace-3')
 
 const tableNames = [{namespace: Ns1, selectedNsId: 1, tableName: 'public."room1 chat history"', roomId: 0, roomName: '#room-1'},
                     {namespace: Ns1, selectedNsId: 1, tableName: 'public."room2 chat history"', roomId: 1, roomName: '#room-2'},
+                    {namespace: Ns1, selectedNsId: 1, tableName: 'public."room3 chat history"', roomId: 2, roomName: '#room-3'},
+                    {namespace: Ns2, selectedNsId: 2, tableName: 'public."room4 chat history"', roomId: 0, roomName: '#room-4'},
                   ];
 
 async function getData(table) {
   try {
-    Ns1.addRoom(new Room(table.selectedNsId, table.roomName, table.roomId, await main(table.tableName)));
+    (table.namespace).addRoom(new Room(table.roomId, table.roomName, table.selectedNsId, await main(table.tableName)));
   }
   catch (error) {
     console.error(error);
   }
-  
 };
+
 
 tableNames.map(item => {
   getData(item);

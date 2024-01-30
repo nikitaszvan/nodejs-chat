@@ -210,8 +210,9 @@ namespaces.forEach(namespace=>{
             //need to fetch the history
             const thisNs = namespaces[roomObj.namespaceId];
             const thisRoomObj = thisNs.rooms.find(room=>room.roomTitle === roomObj.roomTitle)
+            console.log(thisRoomObj, 'here');
             const thisRoomsHistory = thisRoomObj.history;
-            console.log(thisRoomObj);
+            
 
             //leave all rooms, because the client can only be in one room
             const rooms = socket.rooms;
