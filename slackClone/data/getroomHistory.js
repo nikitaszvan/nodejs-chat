@@ -51,7 +51,6 @@ const retrieveTableInfo = async (table) => {
         return {
           ...item,
           avatar: logins.find(user => user.name === item.user).avatar,
-          selectedNsId: 0
         };
       });
 

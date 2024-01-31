@@ -210,7 +210,6 @@ namespaces.forEach(namespace=>{
             //need to fetch the history
             const thisNs = namespaces[roomObj.namespaceId];
             const thisRoomObj = thisNs.rooms.find(room=>room.roomTitle === roomObj.roomTitle)
-            console.log(thisRoomObj, 'here');
             const thisRoomsHistory = thisRoomObj.history;
             
 
@@ -243,7 +242,6 @@ namespaces.forEach(namespace=>{
         })
 
         socket.on('newMessageToRoom',messageObj=>{
-            console.log(messageObj);
             //broadcast this to all the connected clients... this room only!
             //how can we find out what room THIS socket is in?
             const rooms = socket.rooms;

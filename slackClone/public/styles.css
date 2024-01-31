@@ -1,14 +1,28 @@
-body{
+@font-face {
+    font-family: 'Product Sans Light Regular';
+    font-style: normal;
+    font-weight: normal;
+    src: url('./fonts/ProductSans-Light.woff') format('woff');
+    }
+ @font-face {
+    font-family: 'Product Sans Medium Regular';
+    font-style: normal;
+    font-weight: normal;
+    src: url('./fonts/ProductSans-Medium.woff') format('woff');
+    }
+
+body {
     background-color: #3B4048;
     color: white;
+    font-family: 'Product Sans Light Regular';
 }
 
-.namespaces{
+#left-column{
     background-color: #282c34;
     min-height: 100vh;
     color: #ABB2BF;
-    text-align: center;
-    width: 70px;
+    text-align: left;
+    width: 75px;
 }
 
 .namespaces img{
@@ -17,6 +31,12 @@ body{
     border-radius: 10px;
     cursor: pointer;
     width:45px;
+}
+
+.main-pf {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
 }
 
 .room-list, .dm-room-list{
@@ -46,7 +66,19 @@ body{
     background: #3B4048;
     min-height: 100vh;
     color: #fff;
-    width: 220px;
+    width: 150px;
+}
+
+.profile-container {
+    text-align: center;
+}
+
+.logout-button {
+    border: none;
+    background-color: transparent;
+    color: white;
+    position: absolute;
+    bottom: 10px;
 }
 
 .rooms i{
@@ -121,6 +153,14 @@ input {
 .user-avatar {
     width: 30px;
     height: 30px;
+}
+
+.message-text, .message-time {
+    font-family: 'Product Sans Light Regular';
+}
+
+.message-user {
+    font-family: 'Product Sans Medium Regular';
 }
 
 #messages li .user-message .message-text{

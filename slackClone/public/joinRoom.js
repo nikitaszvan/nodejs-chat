@@ -5,7 +5,7 @@ const joinRoom = async(roomTitle, namespaceId)=>{
         document.querySelector('.curr-room-num-users').innerHTML = '';
     }
     else {
-        document.querySelector('.curr-room-num-users').innerHTML = `${ackResp.numUsers}<span class="fa-solid fa-user"></span>`;
+        document.querySelector('.curr-room-num-users').innerHTML = `${ackResp.numUsers}<span class="fa-solid fa-circle" style="color: #00ff11; font-size: 10px; margin-left: 5px;"> online</span>`;
     }
     document.querySelector('.curr-room-text').innerHTML = roomTitle;
 

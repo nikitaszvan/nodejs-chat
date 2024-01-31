@@ -42,7 +42,7 @@ console.log(userDetails);
 localStorage.removeItem(`user_email_${userId}`);
 localStorage.setItem(`test_${userId}`, userDetails);
 const loginname = logins.find(user => user.email == userDetails);
-document.getElementById('user-name').innerHTML +=  `<h2 id='username-header'>${loginname.name}</h2>`
+document.getElementsByClassName('rooms')[0].insertAdjacentHTML('afterbegin',  `<div class="profile-container" style="margin-bottom: 20px;"><img class="main-pf" src=${loginname.avatar} alt= "Profile image of ${loginname.name}"/><h2 id='username-header'>${loginname.name}</h2></div>`);
 
 
 
