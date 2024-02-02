@@ -10,16 +10,16 @@
         </div>
         <div class="rooms">
             <div class="main-rooms">
-                <h6 class="pointer">
+                <h6 class="pointer" onclick="handleRoomClick(this)">
                     <i class="room-caret fa-solid fa-caret-down"></i>Rooms
                 </h6>
                 <ul class="room-list"></ul>
             </div>
             <div class="dm">
-                <h6" class="pointer">
+                <h6 class="pointer" onclick="handleRoomClick(this)">
                     <i class="room-caret fa-solid fa-caret-down"></i>Direct Messages
                 </h6>
-                <ul class="dm-room-list"></ul>
+                <ul class="room-list dm-room-list"></ul>
             </div>
             <form id='logout-form' action="/logout" method="delete">
                 <button type="submit" class="logout-button"><i class="fa fa-power-off" aria-hidden="true"></i>Log out</button>
@@ -41,6 +41,13 @@
     </div>
 </div>
 
+<script>
+    function handleRoomClick(element) {
+        let ulRoomList = element.nextElementSibling;
+        ulRoomList.style.display = (window.getComputedStyle(ulRoomList).getPropertyValue('display') !== 'none') ? 'none' : 'block';
+        element.querySelector('.room-caret').style.transform = (window.getComputedStyle(element.querySelector('.room-caret')).getPropertyValue('transform') === 'matrix(0, -1, 1, 0, 0, 0)') ? 'rotate(0deg)' : 'rotate(-90deg)';
+    }
+</script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/buildMessageHtml.js"></script>
 <script src="/joinRoom.js"></script>

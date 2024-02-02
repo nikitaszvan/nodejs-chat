@@ -11,7 +11,6 @@ socket.on('connect',()=>{
 socket.on('nsList',(nsData)=>{
     const nameSpacesDiv = document.querySelector('.namespaces');
     nsData.forEach(ns=>{
-        console.log(ns);
         //update the HTML with each ns
         nameSpacesDiv.innerHTML +=  `<div class="namespace" ns="${ns.endpoint}"><img src="${ns.image}"></div>`
 
@@ -19,6 +18,7 @@ socket.on('nsList',(nsData)=>{
 
     Array.from(document.getElementsByClassName('namespace')).forEach(element =>{
         element.addEventListener('click', () =>{
+
             const nsEndpoint = element.getAttribute('ns');
 
             const clickedNs = nsData.find(row=>row.endpoint === nsEndpoint);

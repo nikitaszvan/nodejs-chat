@@ -36,13 +36,11 @@ const logins = [
 
 const urlParams = new URLSearchParams(window.location.search);
 const userId = urlParams.get('i');
-console.log(userId);
 let userDetails = localStorage.getItem(`user_email_${userId}`) || localStorage.getItem(`test_${userId}`);
-console.log(userDetails);
 localStorage.removeItem(`user_email_${userId}`);
 localStorage.setItem(`test_${userId}`, userDetails);
 const loginname = logins.find(user => user.email == userDetails);
-document.getElementsByClassName('rooms')[0].insertAdjacentHTML('afterbegin',  `<div class="profile-container" style="margin-bottom: 20px;"><img class="main-pf" src=${loginname.avatar} alt= "Profile image of ${loginname.name}"/><h2 id='username-header'>${loginname.name}</h2></div>`);
+document.getElementsByClassName('rooms')[0].insertAdjacentHTML('afterbegin',  `<div class="profile-container" style="margin-bottom: 20px;"><img style="margin-top: 15px" class="main-pf" src=${loginname.avatar} alt= "Profile image of ${loginname.name}"/><h2 id='username-header'>${loginname.name}</h2></div>`);
 
 
 
@@ -76,6 +74,8 @@ document.querySelector('#message-form').addEventListener('submit', (e)=>{
         selectedNsId,
     })
     document.querySelector('#user-message').value = "";
+    let element = document.getElementById("messages");
+        element.scrollTop = element.scrollHeight;
 });
 
 document.querySelector('#logout-form').addEventListener('submit', (e)=> {
@@ -149,7 +149,16 @@ socket.on('nsList',(nsData)=>{
 
 
     Array.from(document.getElementsByClassName('namespace')).forEach(element=>{
-        element.addEventListener('click',e=>{
+        element.addEventListener('click', e=>{
+            const namespaceContainer = element.parentElement;
+            console.log(namespaceContainer);
+            Array.from(namespaceContainer.children).forEach(child => {
+                console.log(namespaceContainer.children, child);
+                if (child !== element) {
+                    child.querySelector('img').style.border = 'none';
+                }
+            })
+            element.querySelector('img').style.border = 'solid 3px white';
             joinNs(element,nsData);
         })
     })

@@ -5,15 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
 </head>
+<link rel="stylesheet" type="text/css" href="./logincss.css">
 <body>
-    <h2>Login</h2>
-    <form id="loginForm">
-        <label for="email">Email:</label>
-        <input type="text" id="email" name="email" required><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br>
-        <input type="submit" value="Login">
-    </form>
+    <canvas id="svgBlob"></canvas>
+
+<div class="position">
+  <form class="container" id="loginForm">
+    <div class="centering-wrapper">
+      <div class="section1 text-center">
+        <div class="primary-header">Welcome back!</div>
+        <div class="secondary-header">We're so excited to see you again!</div>
+        <div class="input-position">
+	  <div class="form-group">
+            <h5 class="input-placeholder">Email<span class="error-message" id="email-error"></span></h5>
+	    <input type="text"  id="email" name="email" required class="form-style" id="logemail" autocomplete="off" style="margin-bottom: 20px;">
+	    <i class="input-icon uil uil-at"></i>
+	  </div>	
+          <div class="form-group">
+            <h5 class="input-placeholder" id="pword-txt">Password<span class="error-message" id="password-error"></span></h5>
+	    <input type="password" required class="form-style" id="password" name="password" autocomplete="off">
+	    <i class="input-icon uil uil-lock-alt"></i>
+	  </div>
+        </div>
+        <div class="password-container"><a href="#" class="link">Forgot your password?</a></div>
+          <div class="btn-position">
+          <button input="submit" value="Login" class="btn">login</button>
+        </div>
+      </div>
+      
+    </div>
+  </form>
+</div>
 <script>
 document.getElementById('loginForm').addEventListener('submit', function (event) {
     event.preventDefault();

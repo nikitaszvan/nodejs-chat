@@ -33,7 +33,6 @@ const joinNs = (element,nsData)=>{
     const roomNodes = document.querySelectorAll('.room');
     Array.from(roomNodes).forEach(elem=>{
         elem.addEventListener('click',e=>{
-            // console.log("Someone clicked on "+e.target.innerText);
             const namespaceId = elem.getAttribute('namespaceId');
             joinRoom(e.target.innerText,namespaceId)
         })
