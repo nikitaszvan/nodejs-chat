@@ -39,6 +39,13 @@ body {
     transform: translateX(-55px);
 }
 
+.dm-avatar {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
 .namespaces img{
     background-color: #ABB2BF;
     border-radius: 10px;
@@ -50,13 +57,20 @@ body {
 }
 
 .room {
-    padding-left: 20px;
+    padding-left: 30px;
     position: relative;
     margin-right: 35px;
     border-radius: 5px;
 }
 
-.room:hover {
+.glyphicon .room {
+    /* padding-left: 30px; */
+    position: relative;
+    margin-right: 35px;
+    border-radius: 5px;
+}
+
+.room:hover, .room-selected {
     background-color: rgba(255, 255, 255, 0.5);
 }
 
@@ -93,8 +107,7 @@ body {
     background: #3B4048;
     min-height: 100vh;
     color: #fff;
-    width: 175px;
-
+    width: 250px;
     z-index: 2;
     position: relative;
     right: 30px;
@@ -102,25 +115,16 @@ body {
     border-bottom-right-radius: 30px;
 }
 
-.rooms > .main-rooms, .rooms > .dm, .logout-button {
+.rooms > .main-rooms, .rooms > .dm {
     position: relative;
-    left: 35px;
+    left: 45px;
     font-size: 16px;
 }
+
 
 .main-rooms > *, .dm > * {
     position: relative;
     left: 5px;
-}
-
-
-
-
-
-.profile-container {
-    text-align: center;
-    position: relative;
-    left: 15px;
 }
 
 .namespace {
@@ -144,6 +148,15 @@ body {
     color: white;
     position: absolute;
     bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 15px;
+}
+
+.profile-container{
+    text-align: center;
+    position: relative;
+    left: 15px;
 }
 
 .rooms i{

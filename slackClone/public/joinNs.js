@@ -34,6 +34,12 @@ const joinNs = (element,nsData)=>{
     Array.from(roomNodes).forEach(elem=>{
         elem.addEventListener('click',e=>{
             const namespaceId = elem.getAttribute('namespaceId');
+            Array.from(document.querySelectorAll('.room-list')).forEach(element => {
+                Array.from(element.children).forEach(roomItem=> {
+                    roomItem.classList.remove('room-selected');
+                })
+            })
+            e.target.classList.add('room-selected');
             joinRoom(e.target.innerText,namespaceId)
         })
     })

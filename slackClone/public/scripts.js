@@ -133,7 +133,8 @@ socket.on('nsList',(nsData)=>{
         dmRooms.innerHTML = "";
         ns.rooms.forEach(room => {
             if (room.roomTitle != loginname.name) {
-                dmRooms.innerHTML += `<li class="glyphicon glyphicon-globe room" namespaceId="0">${room.roomTitle}</li>`
+                let getAvatar = logins.find(user => user.name == room.roomTitle);
+                dmRooms.innerHTML += `<li class="glyphicon glyphicon-globe room" namespaceId="0"><img class="dm-avatar" src=${getAvatar.avatar}>${room.roomTitle}</li>`
             }
         })
 
