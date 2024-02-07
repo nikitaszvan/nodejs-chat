@@ -1,5 +1,5 @@
 const joinRoom = async(roomTitle, namespaceId)=>{
-
+    
     const ackResp = await nameSpaceSockets[namespaceId].emitWithAck('joinRoom',{roomTitle,namespaceId});
     if (namespaceId == 0) {
         document.querySelector('.curr-room-num-users').innerHTML = '';

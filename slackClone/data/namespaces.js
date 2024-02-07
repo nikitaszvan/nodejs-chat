@@ -24,14 +24,14 @@ const Ns1 = new Namespace(1, 'Namespace1', './img/charizard.png', '/namespace-1'
 const Ns2 = new Namespace(2, 'Namespace2', './img/pikachu.png', '/namespace-2')
 const Ns3 = new Namespace(3, 'Namespace3', './img/squirtle.png', '/namespace-3')
 
-const tableNames = [{namespace: Ns1, selectedNsId: 1, tableName: 'public."room1 chat history"', roomId: 0, roomName: '#room-1'},
-                    {namespace: Ns1, selectedNsId: 1, tableName: 'public."room2 chat history"', roomId: 1, roomName: '#room-2'},
-                    {namespace: Ns1, selectedNsId: 1, tableName: 'public."room3 chat history"', roomId: 2, roomName: '#room-3'},
-                    {namespace: Ns2, selectedNsId: 2, tableName: 'public."room4 chat history"', roomId: 0, roomName: '#room-4'},
-                    {namespace: Ns2, selectedNsId: 2, tableName: 'public."room5 chat history"', roomId: 1, roomName: '#room-5'},
-                    {namespace: Ns3, selectedNsId: 3, tableName: 'public."room6 chat history"', roomId: 0, roomName: '#room-6'},
-                    {namespace: Ns3, selectedNsId: 3, tableName: 'public."room7 chat history"', roomId: 1, roomName: '#room-7'},
-                    {namespace: Ns3, selectedNsId: 3, tableName: 'public."room8 chat history"', roomId: 2, roomName: '#room-8'}
+const tableNames = [{namespace: Ns1, selectedNsId: 1, tableName: 'public."room1 chat history"', roomId: 0, roomName: '#casual'},
+                    {namespace: Ns1, selectedNsId: 1, tableName: 'public."room2 chat history"', roomId: 1, roomName: '#hangout-plans'},
+                    {namespace: Ns1, selectedNsId: 1, tableName: 'public."room3 chat history"', roomId: 2, roomName: '#food-recs'},
+                    {namespace: Ns2, selectedNsId: 2, tableName: 'public."room4 chat history"', roomId: 0, roomName: '#sports'},
+                    {namespace: Ns2, selectedNsId: 2, tableName: 'public."room5 chat history"', roomId: 1, roomName: '#workout'},
+                    {namespace: Ns3, selectedNsId: 3, tableName: 'public."room6 chat history"', roomId: 0, roomName: "#sarah's-bday-surprise"},
+                    {namespace: Ns3, selectedNsId: 3, tableName: 'public."room7 chat history"', roomId: 1, roomName: '#workplace'},
+                    {namespace: Ns3, selectedNsId: 3, tableName: 'public."room8 chat history"', roomId: 2, roomName: '#world-affairs'}
                   ];
 
 async function getData(table) {

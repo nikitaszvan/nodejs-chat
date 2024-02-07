@@ -1,4 +1,4 @@
-const pg = require("pg");
+const { Client } = require('pg');
 require('dotenv').config();
 const logins = [
   {
@@ -34,36 +34,38 @@ const logins = [
 
 ];
 
-const db = new pg.Client({
-  user: process.env.PGADMIN_USER,
-  host: "localhost",
-  database: "postgres",
-  password: process.env.PGADMIN_PASSWORD,
-  port: 5432,
-});
-db.connect();
+
 
 const retrieveTableInfo = async (table) => {
+  const db = new Client({
+    user: process.env.PGADMIN_USER,
+    host: "localhost",
+    database: "postgres",
+    password: process.env.PGADMIN_PASSWORD,
+    port: 5432,
+  });
+
   try {
-      const { rows } = await db.query(`SELECT * FROM ${table}`);
+    await db.connect();
 
-      const addRows = rows.map(item => {
-        return {
-          ...item,
-          avatar: logins.find(user => user.name === item.user).avatar,
-        };
-      });
+    const { rows } = await db.query(`SELECT * FROM ${table}`);
 
-      module.exports = addRows;
-      return addRows;
-    }
-   catch (error) {
-    console.error(`Error while retrieving data from ${tableName}:`, error);
+    // Assuming logins is defined somewhere
+    const addRows = rows.map(item => ({
+      ...item,
+      avatar: logins.find(user => user.name === item.user).avatar,
+    }));
+
+    return addRows;
+  } catch (error) {
+    console.error(`Error while retrieving data from ${table}:`, error);
     return [];
+  } finally {
+    await db.end(); // This closes the connection
   }
 };
 
+module.exports = retrieveTableInfo;
 
-  module.exports = retrieveTableInfo;
 
   

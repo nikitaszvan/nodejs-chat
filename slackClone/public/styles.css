@@ -103,6 +103,10 @@ body {
     color: #fff
 }
 
+.row {
+    width: calc(100% + 180px);
+}
+
 .rooms{
     background: #3B4048;
     min-height: 100vh;
@@ -175,7 +179,7 @@ body {
     padding-top: 10px;
     background-color: #37393E;
     z-index: 1;
-    width: 100vw;
+    width: calc(100% + 60px);
 }
 
 .chat-panel > * {

@@ -7,7 +7,6 @@ const joinNs = (element,nsData)=>{
     //global so we can submit the new message to the right place
     selectedNsId = clickedNs.id;
     const rooms = clickedNs.rooms;
-
     //get the room-list div
     let roomList = document.querySelector('.room-list');
     //clear it out
@@ -18,16 +17,23 @@ const joinNs = (element,nsData)=>{
 
     //loop through each room, and add it to the DOM
     rooms.forEach((room,i)=>{
+        Array.from(document.querySelector('.dm-room-list').children).forEach(dmList => {
+            dmList.classList.remove('room-selected');
+        })
         if(i === 0) {
             firstRoom = room.roomTitle;
+            roomList.innerHTML += `<li class="room group room-selected" namespaceId=${room.namespaceId}>
+            <span class="fa-solid fa-${room.privateRoom ? 'lock' : 'globe'}"></span>${room.roomTitle}
+            </li>`
         }
+        else {
         roomList.innerHTML += `<li class="room group" namespaceId=${room.namespaceId}>
             <span class="fa-solid fa-${room.privateRoom ? 'lock' : 'globe'}"></span>${room.roomTitle}
-        </li>`
+        </li>`}
     })
 
     //init join first room
-    joinRoom(firstRoom,clickedNs.id)
+    joinRoom(firstRoom, clickedNs.id)
 
     //add click listener to each room so the client can tell the server it wants to join!
     const roomNodes = document.querySelectorAll('.room');
@@ -40,7 +46,7 @@ const joinNs = (element,nsData)=>{
                 })
             })
             e.target.classList.add('room-selected');
-            joinRoom(e.target.innerText,namespaceId)
+            joinRoom(e.target.innerText,namespaceId);
         })
     })
 
