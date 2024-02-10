@@ -22,18 +22,18 @@ const joinNs = (element,nsData)=>{
         })
         if(i === 0) {
             firstRoom = room.roomTitle;
-            roomList.innerHTML += `<li class="room group room-selected" namespaceId=${room.namespaceId}>
-            <span class="fa-solid fa-${room.privateRoom ? 'lock' : 'globe'}"></span>${room.roomTitle}
+            roomList.innerHTML += `<li class="room group room-selected" room-title="${room.roomTitle}" namespaceId=${room.namespaceId}>
+            <span class="fa-solid"></span>${room.roomTitle}
             </li>`
         }
         else {
-        roomList.innerHTML += `<li class="room group" namespaceId=${room.namespaceId}>
-            <span class="fa-solid fa-${room.privateRoom ? 'lock' : 'globe'}"></span>${room.roomTitle}
+        roomList.innerHTML += `<li class="room group" room-title="${room.roomTitle}" namespaceId=${room.namespaceId}>
+            <span class="fa-solid"></span>${room.roomTitle}
         </li>`}
     })
 
     //init join first room
-    joinRoom(firstRoom, clickedNs.id)
+    joinRoom(firstRoom, clickedNs.id, loginname.name);
 
     //add click listener to each room so the client can tell the server it wants to join!
     const roomNodes = document.querySelectorAll('.room');
@@ -46,7 +46,7 @@ const joinNs = (element,nsData)=>{
                 })
             })
             e.target.classList.add('room-selected');
-            joinRoom(e.target.innerText,namespaceId);
+            joinRoom(e.target.getAttribute('room-title'),namespaceId, loginname.name);
         })
     })
 

@@ -30,7 +30,7 @@ socket.on('nsList',(nsData)=>{
             roomList.innerHTML = "";
             //loop through each room, and add it to the DOM
             rooms.forEach(room=>{
-                roomList.innerHTML += `<li><span class="glyphicon glyphicon-lock"></span>${room.roomTitle}</li>`
+                roomList.innerHTML += `<li room-title="${room.roomTitle}"><span class="glyphicon glyphicon-lock"></span>${room.roomTitle}</li>`
             })
         })
     })

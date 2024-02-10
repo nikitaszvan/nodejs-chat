@@ -14,7 +14,6 @@ async function main(tableName) {
     } 
   ;
   }
-
   ;
     
 
@@ -31,31 +30,38 @@ const tableNames = [{namespace: Ns1, selectedNsId: 1, tableName: 'public."room1 
                     {namespace: Ns2, selectedNsId: 2, tableName: 'public."room5 chat history"', roomId: 1, roomName: '#workout'},
                     {namespace: Ns3, selectedNsId: 3, tableName: 'public."room6 chat history"', roomId: 0, roomName: "#sarah's-bday-surprise"},
                     {namespace: Ns3, selectedNsId: 3, tableName: 'public."room7 chat history"', roomId: 1, roomName: '#workplace'},
-                    {namespace: Ns3, selectedNsId: 3, tableName: 'public."room8 chat history"', roomId: 2, roomName: '#world-affairs'}
+                    {namespace: Ns3, selectedNsId: 3, tableName: 'public."room8 chat history"', roomId: 2, roomName: '#world-affairs'},
+                    {tableName: 'Emily Smith Joshua Johnson'},
+                    {tableName: 'Emily Smith Sophia Davis'},
+                    {tableName: 'Emily Smith Michael Brown'},
+                    {tableName: 'Emily Smith George Blake'},
+                    {tableName: 'Joshua Johnson Sophia Davis'},
+                    {tableName: 'Joshua Johnson Michael Brown'},
+                    {tableName: 'George Blake Joshua Johnson'},
+                    {tableName: 'Michael Brown Sophia Davis'},
+                    {tableName: 'George Blake Sophia Davis'},
+                    {tableName: 'George Blake Michael Brown'}
                   ];
-
-async function getData(table) {
+  
+async function getData(table, index) {
   try {
+    if (index <= 7) {
     (table.namespace).addRoom(new Room(table.roomId, table.roomName, table.selectedNsId, await main(table.tableName)));
+    }
+    else {
+      directMessagesNs.addRoom(new Room(index-8, table.tableName, 0, await main(`public."${table.tableName}"`)));
+    }
   }
   catch (error) {
     console.error(error);
   }
 };
 
-
-tableNames.map(item => {
-  getData(item);
+tableNames.map((item, index) => {
+  getData(item, index);
 });
 
-
-directMessagesNs.addRoom(new Room(0, 'Emily Smith', 0));
-directMessagesNs.addRoom(new Room(1, 'Joshua Johnson', 0));
-directMessagesNs.addRoom(new Room(2, 'Sophia Davis', 0));
-directMessagesNs.addRoom(new Room(3, 'Michael Brown', 0));
-directMessagesNs.addRoom(new Room(4, 'George Blake', 0));
-
-
 const namespaces = [directMessagesNs, Ns1, Ns2, Ns3];
+
 
 module.exports = namespaces;

@@ -206,16 +206,11 @@ namespaces.forEach(namespace=>{
     // const thisNs = io.of(namespace.endpoint)
     io.of(namespace.endpoint).on('connection',(socket)=>{
         // console.log(`${socket.id} has connected to ${namespace.endpoint}`)
-        socket.on('joinRoom',async(roomObj,ackCallBack)=>{
-            //need to fetch the history
+        socket.on('joinRoom', async(roomObj,ackCallBack) => {
             const thisNs = namespaces[roomObj.namespaceId];
-            const thisRoomObj = thisNs.rooms.find(room=>room.roomTitle === roomObj.roomTitle)
+            const thisRoomObj = thisNs.rooms.find(room=>room.roomTitle === roomObj.roomTitle);
             const thisRoomsHistory = thisRoomObj.history;
-            
-
-            //leave all rooms, because the client can only be in one room
             const rooms = socket.rooms;
-            // console.log(rooms);
             let i = 0;
             rooms.forEach(room=>{
                 //we don't want to leave the socket's personal room which is guaranteed to be first

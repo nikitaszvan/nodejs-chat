@@ -53,7 +53,6 @@ body {
     width:45px;
     transform: translateX(55px);
     box-sizing:content-box;
-
 }
 
 .room {
@@ -96,6 +95,10 @@ body {
 
 .room-list li span, .dm-room-list li span{
     margin-right: 5px;
+}
+
+.selected-ns {
+    border:solid 3px white;
 }
 
 .room-list li.active, .dm-room-list li.active{
