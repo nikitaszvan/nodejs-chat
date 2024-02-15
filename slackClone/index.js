@@ -205,8 +205,7 @@ io.on('connection',(socket)=>{
 namespaces.forEach(namespace=>{
     // const thisNs = io.of(namespace.endpoint)
     io.of(namespace.endpoint).on('connection',(socket)=>{
-        // console.log(`${socket.id} has connected to ${namespace.endpoint}`)
-        socket.on('joinRoom', async(roomObj,ackCallBack) => {
+        socket.on('joinRoom', async(roomObj, ackCallBack) => {
             const thisNs = namespaces[roomObj.namespaceId];
             const thisRoomObj = thisNs.rooms.find(room=>room.roomTitle === roomObj.roomTitle);
             const thisRoomsHistory = thisRoomObj.history;
@@ -242,11 +241,13 @@ namespaces.forEach(namespace=>{
             const rooms = socket.rooms;
             const currentRoom = [...rooms][1]; //this is a set!! Not array
             //send out this messageObj to everyone including the sender
+            console.log(namespace.endpoint, currentRoom, messageObj);
             io.of(namespace.endpoint).in(currentRoom).emit('messageToRoom',messageObj)
             //add this message to this room's history
             const thisNs = namespaces[messageObj.selectedNsId];
             const thisRoom = thisNs.rooms.find(room=>room.roomTitle === currentRoom);
             thisRoom.addMessage(messageObj);
+
         })
 
     })

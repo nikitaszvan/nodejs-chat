@@ -1,6 +1,6 @@
 const joinRoom = async(roomTitle, namespaceId, currentUser)=>{
-    
     const ackResp = await nameSpaceSockets[namespaceId].emitWithAck('joinRoom',{roomTitle,namespaceId});
+
     if (namespaceId == 0) {
         document.querySelector('.curr-room-num-users').innerHTML = '';
     }
@@ -13,6 +13,6 @@ const joinRoom = async(roomTitle, namespaceId, currentUser)=>{
     document.querySelector('#messages').innerHTML = "";
 
     ackResp.thisRoomsHistory.forEach(message=>{
-        document.querySelector('#messages').innerHTML += buildMessageHtml(message)
+        document.querySelector('#messages').innerHTML += buildMessageHtml(message);
     });
 }

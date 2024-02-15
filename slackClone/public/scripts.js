@@ -40,7 +40,7 @@ let userDetails = localStorage.getItem(`user_email_${userId}`) || localStorage.g
 localStorage.removeItem(`user_email_${userId}`);
 localStorage.setItem(`test_${userId}`, userDetails);
 const loginname = logins.find(user => user.email == userDetails);
-document.getElementsByClassName('rooms')[0].insertAdjacentHTML('afterbegin',  `<div class="profile-container" style="margin-bottom: 20px;"><img style="margin-top: 15px" class="main-pf" src=${loginname.avatar} alt= "Profile image of ${loginname.name}"/><h2 id='username-header'>${loginname.name}</h2></div>`);
+document.getElementsByClassName('rooms')[0].insertAdjacentHTML('afterbegin', `<div class="profile-container" style="margin-bottom: 20px;"><img style="margin-top: 15px" class="main-pf" src=${loginname.avatar} alt= "Profile image of ${loginname.name}"/><h2 id='username-header'>${loginname.name}</h2></div>`);
 
 
 
@@ -59,6 +59,7 @@ const listeners = {
 //we will use it to broadcast across the app (redux would be great here...)
 let selectedNsId = 0;
 const date = new Date()
+
 
 //add a submit handler for our form
 document.querySelector('#message-form').addEventListener('submit', (e)=>{
@@ -85,6 +86,14 @@ document.querySelector('#logout-form').addEventListener('submit', (e)=> {
     e.target.submit();
 });
 
+
+document.addEventListener('click', (e) => {
+    console.log (e.target, e.target.classList);
+    if (e.target && e.target.classList.contains('room')) {
+        e.target.classList.add('room-selected');
+    }
+});
+
 //addListeners job is to manage all listeners added to all namespaces.
 //this prevents listeneres being added multiples times and makes life
 //better for us as developers.
@@ -101,7 +110,7 @@ const addListeners = (nsId)=>{
         //add the nsId listener to this namespace!
         nameSpaceSockets[nsId].on('messageToRoom', (messageObj) =>{
             document.querySelector('#messages').innerHTML += buildMessageHtml(messageObj);
-        })
+        });
         listeners.messageToRoom[nsId] = true;
     }
 }
@@ -113,15 +122,12 @@ socket.on('connect',()=>{
 
 //lisen for the nsList event from the server which gives us the namespaces
 socket.on('nsList',(nsData)=>{
-    const lastNs = localStorage.getItem('lastNs');
+    console.log(nsData);
     const nameSpacesDiv = document.querySelector('.namespaces');
     nameSpacesDiv.innerHTML = "";
     nsData.forEach(ns =>{
-        if (ns.id === 1) {
-            nameSpacesDiv.innerHTML +=  `<div class="namespace" ns="${ns.endpoint}"><img class='selected-ns' src="${ns.image}"></div>`
-        }
-        else if (ns.id !== 0) { 
-            nameSpacesDiv.innerHTML +=  `<div class="namespace" ns="${ns.endpoint}"><img src="${ns.image}"></div>`
+        if (ns.id !== 0) { 
+            nameSpacesDiv.innerHTML +=  `<div class="namespace" namespaceId="${ns.id}"ns="${ns.endpoint}"><img src="${ns.image}"></div>`
         }
         else {
             const dmRooms = document.querySelector('.dm-room-list');
@@ -130,7 +136,7 @@ socket.on('nsList',(nsData)=>{
                 if (room.roomTitle != loginname.name && (room.roomTitle).includes(loginname.name)) {
                     let getAvatar = logins.find(user => user.name == ((room.roomTitle).replace(loginname.name, "")).trim());
                     let otherUser = (room.roomTitle).replace(loginname.name, "").trim();
-                    dmRooms.innerHTML += `<li class="glyphicon glyphicon-globe room" room-title="${room.roomTitle}" namespaceId="0"><img class="dm-avatar" src=${getAvatar.avatar}>${otherUser}</li>`
+                    dmRooms.innerHTML += `<li class="glyphicon glyphicon-globe room dm-rooms" room-title="${room.roomTitle}" namespaceId="0" ns='/direct-message-ns'><img class="dm-avatar" src=${getAvatar.avatar}>${otherUser}</li>`
                 }
             })
 
@@ -148,20 +154,33 @@ socket.on('nsList',(nsData)=>{
     Array.from(document.getElementsByClassName('namespace')).forEach(element=>{
         element.addEventListener('click', e=>{
             const namespaceContainer = element.parentElement;
-            console.log(namespaceContainer);
             Array.from(namespaceContainer.children).forEach(child => {
-                console.log(namespaceContainer.children, child);
                 if (child !== element) {
                     child.querySelector('img').classList.remove('selected-ns');
                 }
             })
             element.querySelector('img').classList.add('selected-ns');
-            joinNs(element,nsData);
+            joinNs(element, nsData);
+            localStorage.removeItem('lastNs');
+            localStorage.setItem('lastNs', element);
+
         })
+    })
+        Array.from(document.querySelectorAll('.dm-rooms')).forEach(element=>{
+            element.addEventListener('click', e=>{
+                joinNs(element, nsData);
+            })
     })
     
 
     //if lastNs is set, grab that element instead of 0.
-    joinNs(document.getElementsByClassName('namespace')[0],nsData)
+    if (localStorage.getItem(`lastRoom-${userId}`)){
+        joinNs(null ,nsData, `${JSON.parse(localStorage.getItem(`lastRoom-${userId}`)).roomNsId}`);
+        console.log('room detected');
+    }
+    else {
+        joinNs(document.getElementsByClassName('namespace')[0],nsData)
+        console.log('no previous room detected');
+    }
 
 });

@@ -11,13 +11,9 @@ async function main(tableName) {
       return data;
     } catch (error) {
       console.error('Error exporting data:', error);
-    } 
-  ;
-  }
-  ;
-    
-
-
+    };
+  };
+  
 const directMessagesNs = new Namespace(0, 'DM', '', '/direct-message-ns');
 const Ns1 = new Namespace(1, 'Namespace1', './img/charizard.png', '/namespace-1')
 const Ns2 = new Namespace(2, 'Namespace2', './img/pikachu.png', '/namespace-2')
