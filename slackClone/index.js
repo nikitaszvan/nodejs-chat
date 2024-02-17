@@ -200,7 +200,7 @@ io.on('connection',(socket)=>{
         console.log(socket.id, "has connected")
         socket.emit('nsList', namespaces)
     })
-})
+});
 
 namespaces.forEach(namespace=>{
     // const thisNs = io.of(namespace.endpoint)
@@ -249,7 +249,6 @@ namespaces.forEach(namespace=>{
             thisRoom.addMessage(messageObj);
 
         })
-
     })
 })
 

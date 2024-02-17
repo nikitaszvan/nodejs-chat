@@ -1,6 +1,14 @@
-const joinRoom = async(roomTitle, namespaceId, currentUser)=>{
-    const ackResp = await nameSpaceSockets[namespaceId].emitWithAck('joinRoom',{roomTitle,namespaceId});
+const joinRoom = async(roomTitle, namespaceId, currentUser, userId = null)=>{
+    const ackResp = await nameSpaceSockets[namespaceId].emitWithAck('joinRoom', {roomTitle, namespaceId});
+    console.log(localStorage.getItem(`lastRoom-${userId}`));
 
+    localStorage.setItem(`lastRoom-${userId}`, JSON.stringify({ roomTitle: roomTitle, roomNsId: namespaceId}));
+    Array.from(document.querySelector('.room-list').children).forEach(elem => {
+        elem.classList.remove('room-selected');
+    });
+    localStorage.setItem('currentRoom', roomTitle);
+    document.querySelector(`[room-title="${roomTitle}"]`).classList.add('room-selected');
+    
     if (namespaceId == 0) {
         document.querySelector('.curr-room-num-users').innerHTML = '';
     }

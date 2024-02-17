@@ -4,8 +4,7 @@ const socket = io('http://localhost:9000');
 socket.on('connect',()=>{
     console.log("Connected!");
     socket.emit('clientConnect');
-
-})
+});
 
 //lisen for the nsList event from the server which gives us the namespaces
 socket.on('nsList',(nsData)=>{

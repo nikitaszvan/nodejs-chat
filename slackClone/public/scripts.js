@@ -87,12 +87,11 @@ document.querySelector('#logout-form').addEventListener('submit', (e)=> {
 });
 
 
-document.addEventListener('click', (e) => {
-    console.log (e.target, e.target.classList);
-    if (e.target && e.target.classList.contains('room')) {
-        e.target.classList.add('room-selected');
-    }
-});
+// document.addEventListener('click', (e) => {
+//     if (e.target && e.target.classList.contains('room')) {
+//         e.target.classList.add('room-selected');
+//     }
+// });
 
 //addListeners job is to manage all listeners added to all namespaces.
 //this prevents listeneres being added multiples times and makes life
@@ -122,7 +121,6 @@ socket.on('connect',()=>{
 
 //lisen for the nsList event from the server which gives us the namespaces
 socket.on('nsList',(nsData)=>{
-    console.log(nsData);
     const nameSpacesDiv = document.querySelector('.namespaces');
     nameSpacesDiv.innerHTML = "";
     nsData.forEach(ns =>{
@@ -160,7 +158,7 @@ socket.on('nsList',(nsData)=>{
                 }
             })
             element.querySelector('img').classList.add('selected-ns');
-            joinNs(element, nsData);
+            joinNs(element, nsData, false, true);
             localStorage.removeItem('lastNs');
             localStorage.setItem('lastNs', element);
 
@@ -168,19 +166,19 @@ socket.on('nsList',(nsData)=>{
     })
         Array.from(document.querySelectorAll('.dm-rooms')).forEach(element=>{
             element.addEventListener('click', e=>{
-                joinNs(element, nsData);
+                joinNs(element, nsData, false, true);
             })
     })
-    
+
 
     //if lastNs is set, grab that element instead of 0.
     if (localStorage.getItem(`lastRoom-${userId}`)){
-        joinNs(null ,nsData, `${JSON.parse(localStorage.getItem(`lastRoom-${userId}`)).roomNsId}`);
+        console.log(JSON.parse((localStorage.getItem(`lastRoom-${userId}`))).roomNsId);
+        joinNs(null , nsData, `${JSON.parse(localStorage.getItem(`lastRoom-${userId}`)).roomNsId}`);
         console.log('room detected');
     }
     else {
-        joinNs(document.getElementsByClassName('namespace')[0],nsData)
+        joinNs(document.getElementsByClassName('namespace')[0], nsData);
         console.log('no previous room detected');
     }
-
 });
