@@ -30,6 +30,7 @@ const userId = urlParams.get('i');
     }
     if (selectedNsId === 0) {
         clickedNs = nsData.find(row=>row.endpoint === localStorage.getItem('lastNs'));
+        console.log('something happening here' ,1);
     }
     
     let firstRoom;
@@ -38,25 +39,31 @@ const userId = urlParams.get('i');
         roomList.innerHTML = "";
     rooms.forEach((room,i)=>{
 
-        if (room.roomTitle == localStorage.getItem('currentRoom')) {
-            roomList.innerHTML += `<li class="room group room-selected" room-title="${room.roomTitle}" namespaceId=${room.namespaceId}>
-            <span class="fa-solid"></span>${room.roomTitle}
-            </li>`
-        }
-        else if(i === 0) {
+        if(i === 0) {
             firstRoom = room.roomTitle;
             roomList.innerHTML += `<li class="room group" room-title="${room.roomTitle}" namespaceId=${room.namespaceId}>
             <span class="fa-solid"></span>${room.roomTitle}
             </li>`
         }
         else {
+            if (room.roomTitle == document.querySelector('.curr-room-text').innerHTML) {
+                console.log(document.querySelector('.curr-room-text').innerHTML);
+                roomList.innerHTML += `<li class="room group room-selected" room-title="${room.roomTitle}" namespaceId=${room.namespaceId}>
+            <span class="fa-solid"></span>${room.roomTitle}
+        </li>`
+            }
+
+            else {
         roomList.innerHTML += `<li class="room group" room-title="${room.roomTitle}" namespaceId=${room.namespaceId}>
             <span class="fa-solid"></span>${room.roomTitle}
-        </li>`}
+        </li>`
+            }
+            }
     })
 }
 Array.from(document.querySelector('.room-list').children).forEach(element=>{
     element.addEventListener('click', ()=>{
+        localStorage.setItem(`lastRoom-${userId}`, JSON.stringify({ roomTitle: element.getAttribute('room-title'), roomNsId: element.getAttribute('namespaceid')}));
         joinRoom(element.getAttribute('room-title'), element.getAttribute('namespaceid'), loginname.name);
         
     });
@@ -66,9 +73,13 @@ Array.from(document.querySelector('.room-list').children).forEach(element=>{
     //init join first room
     if (!localStorage.getItem(`lastRoom-${userId}`)) {
         joinRoom(firstRoom, clickedNs.id, loginname.name, userId);
+        console.log('no room detected');
     }
     else if (!isClicked){
         joinRoom(`${JSON.parse(localStorage.getItem(`lastRoom-${userId}`)).roomTitle}`, `${JSON.parse(localStorage.getItem(`lastRoom-${userId}`)).roomNsId}`, loginname.name);
+        console.log('from previous room detected');
 
     }
+
+    console.log(JSON.parse(localStorage.getItem(`lastRoom-${userId}`)));
 }

@@ -173,12 +173,9 @@ socket.on('nsList',(nsData)=>{
 
     //if lastNs is set, grab that element instead of 0.
     if (localStorage.getItem(`lastRoom-${userId}`)){
-        console.log(JSON.parse((localStorage.getItem(`lastRoom-${userId}`))).roomNsId);
         joinNs(null , nsData, `${JSON.parse(localStorage.getItem(`lastRoom-${userId}`)).roomNsId}`);
-        console.log('room detected');
     }
     else {
         joinNs(document.getElementsByClassName('namespace')[0], nsData);
-        console.log('no previous room detected');
     }
 });
