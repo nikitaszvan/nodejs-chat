@@ -1,9 +1,11 @@
 const joinRoom = async(roomTitle, namespaceId, currentUser, userId = null)=>{
     const ackResp = await nameSpaceSockets[namespaceId].emitWithAck('joinRoom', {roomTitle, namespaceId});
-    // console.log(JSON.parse(localStorage.getItem(`lastRoom-${userId}`)));
-    Array.from(document.querySelector('.room-list').children).forEach(elem => {
-        elem.classList.remove('room-selected');
-    });
+    
+    document.querySelectorAll('.room-list').forEach(parentNode => {
+        for (const element of parentNode.children) {
+        element.classList.remove('room-selected');
+    }
+});
     document.querySelector(`[room-title="${roomTitle}"]`).classList.add('room-selected');
     
     if (namespaceId == 0) {

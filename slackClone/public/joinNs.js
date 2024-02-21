@@ -1,14 +1,19 @@
 
 
 const joinNs = (element, nsData, nsId=false, isClicked = false)=>{
-    Array.from(document.querySelector('.namespaces').children).forEach(dmList => {
-        dmList.querySelector('img').classList.remove('selected-ns');
+console.log(element);
+checkNsId = nsId || element.getAttribute('namespaceid');
+if (checkNsId != 0) {
+    Array.from(document.querySelector('.namespaces').children).forEach(elem => {
+        elem.querySelector('img').classList.remove('selected-ns');
     });
+}
     if (element) {
-        element.querySelector('img').classList.add('selected-ns');
+        element.querySelector('div > img')?.classList.add('selected-ns');
     }
     else {
-        document.querySelector(`div[namespaceid="${nsId}"] > img`).classList.add('selected-ns');
+
+        document.querySelector(`div[namespaceid="${nsId}"] > img`) && document.querySelector(`div[namespaceid="${nsId}"] > img`).classList.add('selected-ns');
     }
     
     const urlParams = new URLSearchParams(window.location.search);
@@ -28,14 +33,15 @@ const userId = urlParams.get('i');
         selectedNsId = nsId;
         rooms = clickedNs.rooms;
     }
-    if (selectedNsId === 0) {
-        clickedNs = nsData.find(row=>row.endpoint === localStorage.getItem('lastNs'));
-        console.log('something happening here' ,1);
+
+    if (selectedNsId == 0) {
+        lastNs = localStorage.getItem('lastNs') != 0 ? localStorage.getItem('lastNs') : 1;
+        element.querySelector('div[namespaceid = "1"]').classList.add('selected-ns');
+        clickedNs = nsData.find(row=>row.id == lastNs);
+        rooms = clickedNs.rooms;
     }
-    
     let firstRoom;
-        let roomList = document.querySelector('.room-list');
-    if (selectedNsId!== 0) {
+        let roomList = document.querySelectorAll('.room-list')[0];
         roomList.innerHTML = "";
     rooms.forEach((room,i)=>{
 
@@ -47,7 +53,6 @@ const userId = urlParams.get('i');
         }
         else {
             if (room.roomTitle == document.querySelector('.curr-room-text').innerHTML) {
-                console.log(document.querySelector('.curr-room-text').innerHTML);
                 roomList.innerHTML += `<li class="room group room-selected" room-title="${room.roomTitle}" namespaceId=${room.namespaceId}>
             <span class="fa-solid"></span>${room.roomTitle}
         </li>`
@@ -60,13 +65,15 @@ const userId = urlParams.get('i');
             }
             }
     })
-}
-Array.from(document.querySelector('.room-list').children).forEach(element=>{
+
+document.querySelectorAll('.room-list').forEach(parentNode => {
+    for (const element of parentNode.children) {
     element.addEventListener('click', ()=>{
         localStorage.setItem(`lastRoom-${userId}`, JSON.stringify({ roomTitle: element.getAttribute('room-title'), roomNsId: element.getAttribute('namespaceid')}));
         joinRoom(element.getAttribute('room-title'), element.getAttribute('namespaceid'), loginname.name);
         
     });
+};
 });
 
 
@@ -81,5 +88,5 @@ Array.from(document.querySelector('.room-list').children).forEach(element=>{
 
     }
 
-    console.log(JSON.parse(localStorage.getItem(`lastRoom-${userId}`)));
+    localStorage.setItem('lastNs', selectedNsId !== 0 ? selectedNsId : 1);
 }

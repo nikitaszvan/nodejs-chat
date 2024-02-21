@@ -87,11 +87,7 @@ document.querySelector('#logout-form').addEventListener('submit', (e)=> {
 });
 
 
-// document.addEventListener('click', (e) => {
-//     if (e.target && e.target.classList.contains('room')) {
-//         e.target.classList.add('room-selected');
-//     }
-// });
+
 
 //addListeners job is to manage all listeners added to all namespaces.
 //this prevents listeneres being added multiples times and makes life
@@ -159,8 +155,6 @@ socket.on('nsList',(nsData)=>{
             })
             element.querySelector('img').classList.add('selected-ns');
             joinNs(element, nsData, false, true);
-            localStorage.removeItem('lastNs');
-            localStorage.setItem('lastNs', element);
 
         })
     })
