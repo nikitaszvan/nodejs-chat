@@ -210,19 +210,22 @@ namespaces.forEach(namespace=>{
             const thisRoomObj = thisNs.rooms.find(room=>room.roomTitle === roomObj.roomTitle);
             const thisRoomsHistory = thisRoomObj.history;
             const rooms = socket.rooms;
-            let i = 0;
-            rooms.forEach(room=>{
-                //we don't want to leave the socket's personal room which is guaranteed to be first
-                if(i!==0){
-                    socket.leave(room);
-                }
-                i++;
-            })
+            console.log(socket.id, socket.rooms);
+                
+                let i = 0;
+                rooms.forEach(room=>{
+                    //we don't want to leave the socket's personal room which is guaranteed to be first
+                    if(i!==0){
+                        socket.leave(room);
+                    }
+                    i++;
+                })
 
+                
+        socket.join(roomObj.roomTitle);
             //join the room! 
             // NOTE - roomTitle is coming from the client. Which is NOT safe.
-            // Auth to make sure the socket has right to be in that room
-            socket.join(roomObj.roomTitle);
+            
 
             //fetch the number of sockets in this room
             const sockets = await io.of(namespace.endpoint).in(roomObj.roomTitle).fetchSockets()
@@ -235,13 +238,15 @@ namespaces.forEach(namespace=>{
             })
         })
 
+
         socket.on('newMessageToRoom',messageObj=>{
             //broadcast this to all the connected clients... this room only!
             //how can we find out what room THIS socket is in?
+            console.log(messageObj);
             const rooms = socket.rooms;
+            console.log(socket.id, socket.rooms);
             const currentRoom = [...rooms][1]; //this is a set!! Not array
             //send out this messageObj to everyone including the sender
-            console.log(namespace.endpoint, currentRoom, messageObj);
             io.of(namespace.endpoint).in(currentRoom).emit('messageToRoom',messageObj)
             //add this message to this room's history
             const thisNs = namespaces[messageObj.selectedNsId];

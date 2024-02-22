@@ -57,7 +57,6 @@ const listeners = {
 
 //a global variable we can update when the user clicks on a namespace
 //we will use it to broadcast across the app (redux would be great here...)
-let selectedNsId = 0;
 const date = new Date()
 
 

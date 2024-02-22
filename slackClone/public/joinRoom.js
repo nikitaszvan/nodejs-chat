@@ -1,6 +1,6 @@
 const joinRoom = async(roomTitle, namespaceId, currentUser, userId = null)=>{
     const ackResp = await nameSpaceSockets[namespaceId].emitWithAck('joinRoom', {roomTitle, namespaceId});
-    
+    selectedNsId = namespaceId;
     document.querySelectorAll('.room-list').forEach(parentNode => {
         for (const element of parentNode.children) {
         element.classList.remove('room-selected');

@@ -25,24 +25,24 @@ const userId = urlParams.get('i');
         const nsEndpoint = element.getAttribute('ns');
         clickedNs = nsData.find(row=>row.endpoint === nsEndpoint);
         //global so we can submit the new message to the right place
-        selectedNsId = clickedNs.id;
         rooms = clickedNs.rooms;
     }
     else {
         clickedNs = nsData.find(row=>row.id == nsId);
-        selectedNsId = nsId;
         rooms = clickedNs.rooms;
     }
+    lastNs = clickedNs.id != 0 ? clickedNs.id || nsId : localStorage.getItem('lastNs'); 
 
-    if (selectedNsId == 0) {
-        lastNs = localStorage.getItem('lastNs') != 0 ? localStorage.getItem('lastNs') : 1;
-        element.querySelector('div[namespaceid = "1"]').classList.add('selected-ns');
+    if (clickedNs.id || nsId == 0) {
+        document.querySelector(`div[namespaceid = "${lastNs}"] > img`).classList.add('selected-ns');
         clickedNs = nsData.find(row=>row.id == lastNs);
         rooms = clickedNs.rooms;
     }
     let firstRoom;
         let roomList = document.querySelectorAll('.room-list')[0];
         roomList.innerHTML = "";
+
+    
     rooms.forEach((room,i)=>{
 
         if(i === 0) {
@@ -70,8 +70,7 @@ document.querySelectorAll('.room-list').forEach(parentNode => {
     for (const element of parentNode.children) {
     element.addEventListener('click', ()=>{
         localStorage.setItem(`lastRoom-${userId}`, JSON.stringify({ roomTitle: element.getAttribute('room-title'), roomNsId: element.getAttribute('namespaceid')}));
-        joinRoom(element.getAttribute('room-title'), element.getAttribute('namespaceid'), loginname.name);
-        
+        joinRoom(element.getAttribute('room-title'), element.getAttribute('namespaceid'), loginname.name, null);
     });
 };
 });
@@ -82,11 +81,11 @@ document.querySelectorAll('.room-list').forEach(parentNode => {
         joinRoom(firstRoom, clickedNs.id, loginname.name, userId);
         console.log('no room detected');
     }
-    else if (!isClicked){
-        joinRoom(`${JSON.parse(localStorage.getItem(`lastRoom-${userId}`)).roomTitle}`, `${JSON.parse(localStorage.getItem(`lastRoom-${userId}`)).roomNsId}`, loginname.name);
+    else {
+        joinRoom(`${JSON.parse(localStorage.getItem(`lastRoom-${userId}`)).roomTitle}`, `${JSON.parse(localStorage.getItem(`lastRoom-${userId}`)).roomNsId}`, loginname.name,null);
         console.log('from previous room detected');
-
     }
 
-    localStorage.setItem('lastNs', selectedNsId !== 0 ? selectedNsId : 1);
+    localStorage.setItem('lastNs', lastNs);
+    
 }
