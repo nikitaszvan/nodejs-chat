@@ -251,6 +251,7 @@ namespaces.forEach(namespace=>{
             //add this message to this room's history
             const thisNs = namespaces[messageObj.selectedNsId];
             const thisRoom = thisNs.rooms.find(room=>room.roomTitle === currentRoom);
+            console.log(thisRoom);
             thisRoom.addMessage(messageObj);
 
         })
