@@ -15,9 +15,9 @@ async function main(tableName) {
   };
   
 const directMessagesNs = new Namespace(0, 'DM', '', '/direct-message-ns');
-const Ns1 = new Namespace(1, 'Namespace1', './img/charizard.png', '/namespace-1')
-const Ns2 = new Namespace(2, 'Namespace2', './img/pikachu.png', '/namespace-2')
-const Ns3 = new Namespace(3, 'Namespace3', './img/squirtle.png', '/namespace-3')
+const Ns1 = new Namespace(1, 'Namespace1', ['fa-solid', 'fa-dragon'], '/namespace-1');
+const Ns2 = new Namespace(2, 'Namespace2', ['fa-solid', 'fa-staff-snake'], '/namespace-2');
+const Ns3 = new Namespace(3, 'Namespace3', ['fa-solid', 'fa-feather-pointed'], '/namespace-3');
 
 const tableNames = [{namespace: Ns1, selectedNsId: 1, tableName: 'public."room1 chat history"', roomId: 0, roomName: '#casual'},
                     {namespace: Ns1, selectedNsId: 1, tableName: 'public."room2 chat history"', roomId: 1, roomName: '#hangout-plans'},

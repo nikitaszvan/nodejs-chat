@@ -40,7 +40,7 @@ let userDetails = localStorage.getItem(`user_email_${userId}`) || localStorage.g
 localStorage.removeItem(`user_email_${userId}`);
 localStorage.setItem(`test_${userId}`, userDetails);
 const loginname = logins.find(user => user.email == userDetails);
-document.getElementsByClassName('rooms')[0].insertAdjacentHTML('afterbegin', `<div class="profile-container" style="margin-bottom: 20px;"><img style="margin-top: 15px" class="main-pf" src=${loginname.avatar} alt= "Profile image of ${loginname.name}"/><h2 id='username-header'>${loginname.name}</h2></div>`);
+document.getElementsByClassName('profile-section')[0].insertAdjacentHTML('afterbegin', `<div class="profile-container" style="margin-bottom: 20px;"><img style="margin-top: 15px" class="main-pf" src=${loginname.avatar} alt= "Profile image of ${loginname.name}"/><h2 id='username-header'>${loginname.name}</h2></div>`);
 
 
 
@@ -116,11 +116,13 @@ socket.on('connect',()=>{
 
 //lisen for the nsList event from the server which gives us the namespaces
 socket.on('nsList',(nsData)=>{
+    let iconContainer;
+    let iconElement;
     const nameSpacesDiv = document.querySelector('.namespaces');
     nameSpacesDiv.innerHTML = "";
     nsData.forEach(ns =>{
         if (ns.id !== 0) { 
-            nameSpacesDiv.innerHTML +=  `<div class="namespace" namespaceId="${ns.id}"ns="${ns.endpoint}"><img src="${ns.image}"></div>`
+            nameSpacesDiv.innerHTML +=  `<div class="namespace" namespaceId="${ns.id}"ns="${ns.endpoint}"></div>`
         }
         else {
             const dmRooms = document.querySelector('.dm-room-list');
@@ -141,18 +143,28 @@ socket.on('nsList',(nsData)=>{
         }
         addListeners(ns.id);
     })
+
+    nsData.forEach(ns=> {
+        let i=0;
+        console.log(ns.classes);
+        iconContainer = document.querySelector(`[ns='${ns.endpoint}']`);
+        iconElement = document.createElement('i');
+        for (let i = 0; i < (ns.classes).length; i++) {
+            iconElement.classList.add((ns.classes)[i]);
+            iconContainer.appendChild(iconElement);
+          }
+        // (ns.classes).forEach(faClass => {
+        //     iconContainer = document.querySelector(`[ns=${ns.endpoint}]`);
+        //     iconElement = document.createElement('i');
+        //     iconElement.classList.add(faClass); // Use the appropriate classes for the icon
+        //     iconContainer.appendChild(iconElement);
+        // })
+    });
     
 
 
     Array.from(document.getElementsByClassName('namespace')).forEach(element=>{
         element.addEventListener('click', e=>{
-            const namespaceContainer = element.parentElement;
-            Array.from(namespaceContainer.children).forEach(child => {
-                if (child !== element) {
-                    child.querySelector('img').classList.remove('selected-ns');
-                }
-            })
-            element.querySelector('img').classList.add('selected-ns');
             joinNs(element, nsData, false, true);
 
         })

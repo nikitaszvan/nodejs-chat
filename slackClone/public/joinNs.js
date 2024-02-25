@@ -1,23 +1,16 @@
 
 
 const joinNs = (element, nsData, nsId=false, isClicked = false)=>{
-console.log(element);
 checkNsId = nsId || element.getAttribute('namespaceid');
-if (checkNsId != 0) {
-    Array.from(document.querySelector('.namespaces').children).forEach(elem => {
-        elem.querySelector('img').classList.remove('selected-ns');
-    });
-}
-    if (element) {
-        element.querySelector('div > img')?.classList.add('selected-ns');
-    }
-    else {
-
-        document.querySelector(`div[namespaceid="${nsId}"] > img`) && document.querySelector(`div[namespaceid="${nsId}"] > img`).classList.add('selected-ns');
-    }
-    
+    const allNamespaceElements = document.querySelector('.namespaces').children;
+    Array.from(allNamespaceElements).forEach(nsElement => {
+        nsElement.classList.remove('selected-ns');
+        nsElement.querySelector('i').classList.remove('selected-ns');
+    })
+    document.querySelector(`div[namespaceId = '${checkNsId}']`).classList.add('selected-ns');
+    document.querySelector(`div[namespaceId = '${checkNsId}'] > i`).classList.add('selected-ns');
     const urlParams = new URLSearchParams(window.location.search);
-const userId = urlParams.get('i');
+    const userId = urlParams.get('i');
 
     let clickedNs;
     let rooms;
@@ -34,7 +27,6 @@ const userId = urlParams.get('i');
     lastNs = clickedNs.id != 0 ? clickedNs.id || nsId : localStorage.getItem('lastNs'); 
 
     if (clickedNs.id || nsId == 0) {
-        document.querySelector(`div[namespaceid = "${lastNs}"] > img`).classList.add('selected-ns');
         clickedNs = nsData.find(row=>row.id == lastNs);
         rooms = clickedNs.rooms;
     }

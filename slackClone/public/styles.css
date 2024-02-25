@@ -11,33 +11,38 @@
     src: url('./fonts/ProductSans-Medium.woff') format('woff');
     }
 
+
 body {
     background-color: white;
     color: white;
-    font-family: 'Product Sans Light Regular';
+    font-family: "Padauk", sans-serif;
     overflow: hidden;
+    margin: 0;
+}
+
+.row {
+    display: flex;
 }
 
 #left-column{
-    background-color: #282c34;
+    background-color: #090B15;
     min-height: 100vh;
     color: #ABB2BF;
     text-align: left;
-    width: 75px;
+    width: 90px;
     padding: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 30px;
-    border-top-right-radius: 30px;
-    border-bottom-right-radius: 30px;
     z-index: 3;
     position: relative;
 }
 
-.namespaces {
-    transform: translateX(-55px);
+.logo {
+    margin-top: 20px;
 }
+
 
 .dm-avatar {
     width: 20px;
@@ -51,8 +56,9 @@ body {
     border-radius: 10px;
     cursor: pointer;
     width:45px;
-    transform: translateX(55px);
     box-sizing:content-box;
+    position: relative;
+    left: 60px;
 }
 
 .room {
@@ -97,35 +103,55 @@ body {
     margin-right: 5px;
 }
 
-.selected-ns {
-    border:solid 3px white;
-}
-
 .room-list li.active, .dm-room-list li.active{
     background-color: #61AFEF;
     color: #fff
 }
 
 .row {
-    width: calc(100% + 180px);
+    width: 100%;
 }
 
-.rooms{
-    background: #3B4048;
+.second-column{
+    background: #FFFFFF;
     min-height: 100vh;
     color: #fff;
-    width: 300px;
+    width: 250px;
     z-index: 2;
     position: relative;
-    right: 30px;
-    border-top-right-radius: 30px;
-    border-bottom-right-radius: 30px;
 }
 
-.rooms > .main-rooms, .rooms > .dm {
+.second-column > .rooms > .main-rooms, .second-column> .rooms > .dm {
     position: relative;
-    left: 45px;
     font-size: 16px;
+    font-family: "Padauk", sans-serif;
+    color: #090B15;
+}
+
+.messages-header {
+    height: 8%;
+}
+.messages-header{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: solid 3px #FAF8F4;
+}
+
+.messages-header {
+    font-family: "Padauk", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.messages-header > h1 {
+    /* font-size: 20px; */
+    color: #090B15;
+    font-weight: 700;
+}
+
+.messages-header > h3 {
+    color: #877CD8;
 }
 
 
@@ -135,18 +161,48 @@ body {
 }
 
 .namespace {
-    width: 100%;
+    height: 60px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    border-radius: 15px;
-    transition: background-color 1s ease;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    border-radius: 5px;
+    transition: background-color 0.5s ease;
+    background-color: transparent;
+    position: relative;
+    right: 55px;
+    margin: 30px 0;
+}
+
+.namespace > i {
+    font-size: 32px;
+    position: relative;
+    top: 10px;
+    left: 55px;
+}
+
+.namespace:nth-child(1) > i {
+    margin-top: 4px;
+}
+
+.namespace:nth-child(2) > i {
+    font-size: 42px;
+}
+
+.namespace:nth-child(3) > i {
+    font-size: 34px;
+    margin-top: 3px;
 }
 
 .namespace:hover {
-    background-color: white;
+    background-color: #ABB2BF;
+}
+
+.selected-ns {
+    color: #877CD8;
+}
+
+.namespace.selected-ns {
+    background-color: #877CD8;
 }
 
 .logout-button {
@@ -156,14 +212,12 @@ body {
     position: absolute;
     bottom: 10px;
     left: 50%;
-    transform: translateX(-50%);
     font-size: 15px;
 }
 
 .profile-container{
     text-align: center;
     position: relative;
-    left: 15px;
 }
 
 .rooms i{
@@ -175,28 +229,28 @@ body {
 }
 
 .chat-panel{
-    background-color: #fff;
+    background-color: #FAF8F4;
     min-height: 100vh;
     position: relative;
-    right: 60px;
     padding-top: 10px;
-    background-color: #37393E;
     z-index: 1;
-    width: calc(100% + 60px);
+    width: 75%;
+}
+
+.room-header {
+    background-color: #FFFFFF;
 }
 
 .chat-panel > * {
     position: relative;
-    left: 30px;
+    color: #090B15;
 }
 .chat-panel .curr-room-text{
-    color: #fff;
     font-size: 26px;
     margin-right: 15px;
 }
 .curr-room-num-users, .search{
     font-size: 14px;
-    color: #ABB2BF;
     justify-items: flex-end;
     width: 250px;
 }
@@ -224,7 +278,7 @@ body {
 
 
 input { 
-    width: 100%; 
+    width: 70%; 
     height: 34px; 
     color: #ABB2BF; 
     border: 1px solid #3B4048; 
@@ -248,9 +302,6 @@ input {
     width: 50px;
     display: inline-block;
 }
-#messages li .user-message{
-    color: #fff;
-}
 
 .user-avatar {
     width: 30px;
@@ -269,18 +320,14 @@ input {
     font-family: 'Product Sans Medium Regular';
 }
 
-#messages li .user-message .message-text{
-    color: white;
-}
-
-#messages li .user-name-time span{
-    color: #ABB2BF;
-}
-
 #messages li { 
     padding: 5px 10px; 
     display: flex;
     align-items: stretch;
+}
+
+.profile-section {
+    width: 10%;
 }
 
 .pointer{

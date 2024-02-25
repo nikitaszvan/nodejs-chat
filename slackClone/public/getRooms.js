@@ -8,11 +8,12 @@ socket.on('connect',()=>{
 
 //lisen for the nsList event from the server which gives us the namespaces
 socket.on('nsList',(nsData)=>{
+    let iconContainer;
+    let iconElement;
     const nameSpacesDiv = document.querySelector('.namespaces');
     nsData.forEach(ns=>{
         //update the HTML with each ns
-        nameSpacesDiv.innerHTML +=  `<div class="namespace" ns="${ns.endpoint}"><img src="${ns.image}"></div>`
-
+        nameSpacesDiv.innerHTML +=  `<div class="namespace" ns="${ns.endpoint}"></div>`
     })
 
     Array.from(document.getElementsByClassName('namespace')).forEach(element =>{
